@@ -1,0 +1,12 @@
+version: 2.1
+jobs:
+  noop:
+    machine: true
+    steps:
+      - run: 'echo noop'
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - noop
