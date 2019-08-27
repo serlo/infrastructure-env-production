@@ -114,14 +114,14 @@ module "gcloud_postgres" {
 }
 
 module "legacy-editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=v1.0.0"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=653d3db56b18241942105eac1a29d91a2a69e7be"
   image        = local.legacy-editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
 }
 
 module "editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=v1.0.0"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=653d3db56b18241942105eac1a29d91a2a69e7be"
   image        = local.editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
@@ -137,7 +137,7 @@ module "varnish" {
 }
 
 module "athene2" {
-  source      = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=v1.0.0"
+  source      = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=653d3db56b18241942105eac1a29d91a2a69e7be"
   httpd_image = local.athene2_httpd_image
 
   php_image                 = local.athene2_php_image
