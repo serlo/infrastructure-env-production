@@ -23,7 +23,7 @@ locals {
   kpi_database_instance_name = "${local.project}-postgres-instance-10072019-1"
 
   legacy-editor-renderer_image = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
-  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.4"
+  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.5"
 
   ingress_tls_certificate_path = "secrets/serlo_org_selfsigned.crt"
   ingress_tls_key_path         = "secrets/serlo_org_selfsigned.key"
@@ -116,14 +116,14 @@ module "gcloud_postgres" {
 }
 
 module "legacy-editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=ddbd93b26870cb99f10a63d4a43962b265300bef"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=2738e24fff15d5be246c2533da27cbfa3cb12a71"
   image        = local.legacy-editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
 }
 
 module "editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=ddbd93b26870cb99f10a63d4a43962b265300bef"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=2738e24fff15d5be246c2533da27cbfa3cb12a71"
   image        = local.editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
@@ -139,7 +139,7 @@ module "varnish" {
 }
 
 module "athene2" {
-  source                  = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=ddbd93b26870cb99f10a63d4a43962b265300bef"
+  source                  = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=2738e24fff15d5be246c2533da27cbfa3cb12a71"
   httpd_image             = local.athene2_httpd_image
   notifications-job_image = local.athene2_notifications-job_image
 
