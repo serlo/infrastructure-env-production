@@ -180,11 +180,13 @@ module "athene2" {
 }
 
 module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.0.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=f83107579c97737c5e119b169085532940a7d4a9"
   domain = local.domain
 
   grafana_admin_password = var.kpi_grafana_admin_password
+  grafana_serlo_password = var.kpi_grafana_serlo_password
 
+  athene2_database_username_readonly = "root"
   athene2_database_host              = module.gcloud_mysql.database_private_ip_address
   athene2_database_password_readonly = var.athene2_database_password_readonly
 
@@ -192,9 +194,9 @@ module "kpi" {
   kpi_database_password_default  = var.kpi_kpi_database_password_default
   kpi_database_password_readonly = var.kpi_kpi_database_password_readonly
 
-  grafana_image        = "eu.gcr.io/serlo-shared/grafana:6.2.5"
+  grafana_image        = "eu.gcr.io/serlo-shared/kpi-grafana:1.0.1"
   mysql_importer_image = "eu.gcr.io/serlo-shared/kpi-mysql-importer:1.2.1"
-  aggregator_image     = "eu.gcr.io/serlo-shared/kpi-aggregator:1.2.1"
+  aggregator_image     = "eu.gcr.io/serlo-shared/kpi-aggregator:1.3.2"
 }
 
 module "ingress-nginx" {
