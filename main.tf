@@ -12,8 +12,8 @@ locals {
   #n1-highcpu-8
   cluster_machine_type = "n1-highcpu-8"
 
-  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.0.6"
-  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.0.6"
+  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.0.7"
+  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.0.7"
   athene2_php_definitions-file_path = "secrets/athene2/definitions.production.php"
 
   athene2_notifications-job_image = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
@@ -23,7 +23,7 @@ locals {
   kpi_database_instance_name = "${local.project}-postgres-instance-10072019-1"
 
   legacy-editor-renderer_image = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
-  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.6"
+  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.7"
 
   ingress_tls_certificate_path = "secrets/serlo_org_selfsigned.crt"
   ingress_tls_key_path         = "secrets/serlo_org_selfsigned.key"
