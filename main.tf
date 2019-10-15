@@ -180,7 +180,7 @@ module "athene2" {
 }
 
 module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.1.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.2.0"
   domain = local.domain
 
   grafana_admin_password = var.kpi_grafana_admin_password
