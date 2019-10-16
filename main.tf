@@ -23,7 +23,7 @@ locals {
   kpi_database_instance_name = "${local.project}-postgres-instance-10072019-1"
 
   legacy-editor-renderer_image = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
-  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.7"
+  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.8"
 
   ingress_tls_certificate_path = "secrets/serlo_org_selfsigned.crt"
   ingress_tls_key_path         = "secrets/serlo_org_selfsigned.key"
