@@ -12,8 +12,8 @@ locals {
   #n1-highcpu-8
   cluster_machine_type = "n1-highcpu-8"
 
-  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.0.7"
-  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.0.7"
+  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.1.0"
+  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.1.0"
   athene2_php_definitions-file_path = "secrets/athene2/definitions.production.php"
 
   athene2_notifications-job_image = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
