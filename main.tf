@@ -11,8 +11,8 @@ locals {
 
   cluster_machine_type = "n1-highcpu-8"
 
-  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.1.0"
-  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.1.0"
+  athene2_httpd_image               = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.1.1"
+  athene2_php_image                 = "eu.gcr.io/serlo-shared/serlo-org-php:3.1.1"
   athene2_php_definitions-file_path = "secrets/athene2/definitions.production.php"
 
   athene2_notifications-job_image = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
@@ -20,7 +20,7 @@ locals {
   athene2_database_instance_name = "${local.project}-mysql-instance-10072019-1"
 
   legacy-editor-renderer_image = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
-  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.8"
+  editor-renderer_image        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.9"
 
   kpi_database_instance_name = "${local.project}-postgres-instance-10072019-1"
 
@@ -77,7 +77,7 @@ provider "template" {
 # modules
 #####################################################################
 module "gcloud" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud?ref=288d47f68171c91db8ae79234669d91bf7adbe2d"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud?ref=15666ddbd5b93c74c28781fec90a7b03b99b6377"
   project                  = local.project
   clustername              = "${local.project}-cluster"
   location                 = "europe-west1-b"
@@ -94,7 +94,7 @@ module "gcloud" {
 }
 
 module "gcloud_mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=288d47f68171c91db8ae79234669d91bf7adbe2d"
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=15666ddbd5b93c74c28781fec90a7b03b99b6377"
   database_instance_name     = local.athene2_database_instance_name
   database_connection_name   = "${local.project}:${local.region}:${local.athene2_database_instance_name}"
   database_region            = local.region
@@ -112,7 +112,7 @@ module "gcloud_mysql" {
 }
 
 module "gcloud_postgres" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=288d47f68171c91db8ae79234669d91bf7adbe2d"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=15666ddbd5b93c74c28781fec90a7b03b99b6377"
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
@@ -133,7 +133,7 @@ module "gcloud_postgres" {
 }
 
 module "legacy-editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=463c7b37dcdde4dc89f45fd40925a0f0ea7c00d2"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//legacy-editor-renderer?ref=088cfd39b8a6c2b9e79484195c5a90389dd2e8bd"
   image        = local.legacy-editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
@@ -144,7 +144,7 @@ module "legacy-editor-renderer" {
 }
 
 module "editor-renderer" {
-  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=463c7b37dcdde4dc89f45fd40925a0f0ea7c00d2"
+  source       = "github.com/serlo/infrastructure-modules-serlo.org.git//editor-renderer?ref=088cfd39b8a6c2b9e79484195c5a90389dd2e8bd"
   image        = local.editor-renderer_image
   namespace    = kubernetes_namespace.athene2_namespace.metadata.0.name
   app_replicas = 2
@@ -169,7 +169,7 @@ module "varnish" {
 }
 
 module "athene2" {
-  source                  = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=463c7b37dcdde4dc89f45fd40925a0f0ea7c00d2"
+  source                  = "github.com/serlo/infrastructure-modules-serlo.org.git//athene2?ref=088cfd39b8a6c2b9e79484195c5a90389dd2e8bd"
   httpd_image             = local.athene2_httpd_image
   notifications-job_image = local.athene2_notifications-job_image
 
