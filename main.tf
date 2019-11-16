@@ -215,6 +215,38 @@ module "athene2" {
   }
 }
 
+module "athene2-dbdump" {
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=6e305bf681c95fdc678b3094649d35ee13f75759"
+  image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
+  namespace = kubernetes_namespace.athene2_namespace.metadata.0.name
+  schedule  = "0 0 * * *"
+  database = {
+    host     = module.gcloud_mysql.database_private_ip_address
+    port     = "3306"
+    username = "serlo_readonly"
+    password = var.athene2_database_password_readonly
+    name     = "serlo"
+  }
+
+  bucket = {
+    url                 = "gs://anonymous-data"
+    service_account_key = module.gcloud_dbdump_writer.account_key
+  }
+
+  providers = {
+    kubernetes = "kubernetes"
+    template   = "template"
+  }
+}
+
+module "gcloud_dbdump_writer" {
+  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=15666ddbd5b93c74c28781fec90a7b03b99b6377"
+
+  providers = {
+    google = "google"
+  }
+}
+
 module "kpi" {
   source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.2.0"
   domain = local.domain
