@@ -216,7 +216,7 @@ module "athene2" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=6e305bf681c95fdc678b3094649d35ee13f75759"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=5a81003433cbb37ff7fd64220f3176470234a50c"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.athene2_namespace.metadata.0.name
   schedule  = "0 0 * * *"
