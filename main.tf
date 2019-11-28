@@ -13,8 +13,8 @@ locals {
 
   serlo_org_images = {
     server = {
-      httpd             = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.5.1"
-      php               = "eu.gcr.io/serlo-shared/serlo-org-php:3.5.1"
+      httpd             = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.5.2"
+      php               = "eu.gcr.io/serlo-shared/serlo-org-php:3.5.2"
       notifications_job = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
     }
     editor_renderer        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.9"
