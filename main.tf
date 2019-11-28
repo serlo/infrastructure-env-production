@@ -17,8 +17,8 @@ locals {
       php               = "eu.gcr.io/serlo-shared/serlo-org-php:3.5.1"
       notifications_job = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
     }
-    editor_renderer        = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
-    legacy_editor_renderer = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.9"
+    editor_renderer        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.9"
+    legacy_editor_renderer = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:1.0.0"
     varnish                = "eu.gcr.io/serlo-shared/varnish:6.0"
   }
 
