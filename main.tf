@@ -13,8 +13,8 @@ locals {
 
   serlo_org_images = {
     server = {
-      httpd             = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.5.2"
-      php               = "eu.gcr.io/serlo-shared/serlo-org-php:3.5.2"
+      httpd             = "eu.gcr.io/serlo-shared/serlo-org-httpd:3.5.3"
+      php               = "eu.gcr.io/serlo-shared/serlo-org-php:3.5.3"
       notifications_job = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:1.0.2"
     }
     editor_renderer        = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:2.0.9"
@@ -209,7 +209,7 @@ module "serlo_org" {
 
     upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
     hydra_admin_uri = module.hydra.admin_uri
-    feature_flags   = "[]"
+    feature_flags   = "['donation-banner' => true]"
   }
 
   editor_renderer = {
