@@ -13,8 +13,8 @@ locals {
 
   serlo_org_image_tags = {
     server = {
-      httpd             = "4.2.1"
-      php               = "4.2.1"
+      httpd             = "4.2.3"
+      php               = "4.2.3"
       notifications_job = "1.0.2"
     }
     editor_renderer        = "2.0.9"
