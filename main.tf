@@ -13,13 +13,13 @@ locals {
 
   serlo_org_image_tags = {
     server = {
-      httpd             = "4.2.3"
-      php               = "4.2.3"
-      notifications_job = "1.0.2"
+      httpd             = "5.0.0"
+      php               = "5.0.0"
+      notifications_job = "2.0.1"
     }
-    editor_renderer        = "2.0.9"
-    legacy_editor_renderer = "1.0.0"
-    frontend               = "0.1.4"
+    editor_renderer        = "3.0.0"
+    legacy_editor_renderer = "2.0.0"
+    frontend               = "1.0.0"
   }
   varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
 
@@ -150,7 +150,7 @@ module "gcloud_postgres" {
 }
 
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=9fe0c43443d40c74b1d11fa98da8a64a28ed1003"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=972a0aab32801973cfc0f8d44f7676d16f7f9d08"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -212,6 +212,7 @@ module "serlo_org" {
     upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
     hydra_admin_uri = module.hydra.admin_uri
     feature_flags   = "['donation-banner' => true]"
+    redis_hosts     = "[]"
   }
 
   editor_renderer = {
@@ -243,7 +244,7 @@ module "serlo_org" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=9fe0c43443d40c74b1d11fa98da8a64a28ed1003"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=972a0aab32801973cfc0f8d44f7676d16f7f9d08"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
@@ -350,10 +351,11 @@ module "rocket-chat" {
   smtp_password = var.athene2_php_smtp_password
 
   providers = {
-    google   = google
-    helm     = helm
-    random   = random
-    template = template
+    google     = google
+    helm       = helm
+    kubernetes = kubernetes
+    random     = random
+    template   = template
   }
 }
 
