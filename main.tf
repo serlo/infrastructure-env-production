@@ -19,7 +19,7 @@ locals {
     }
     editor_renderer        = "4.0.0"
     legacy_editor_renderer = "2.0.0"
-    frontend               = "2.0.1"
+    frontend               = "2.0.2"
   }
   varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
 
