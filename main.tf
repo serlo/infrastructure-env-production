@@ -211,7 +211,7 @@ module "serlo_org" {
 
     upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
     hydra_admin_uri = module.hydra.admin_uri
-    feature_flags   = "['client-frontend' => true, 'frontend-content' => true, 'frontend-diff' => true, 'frontend-donation-banner' => true, 'frontend-editor' => true, 'frontend-legacy-content' => true, 'key-value-store' => true]"
+    feature_flags   = "['client-frontend' => true, 'donation-banner' => true, 'frontend-content' => true, 'frontend-diff' => true, 'frontend-donation-banner' => true, 'frontend-editor' => true, 'frontend-legacy-content' => true, 'key-value-store' => true]"
     redis_hosts     = "['redis-headless.redis']"
   }
 
