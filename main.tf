@@ -289,9 +289,9 @@ module "kpi" {
   kpi_database_password_default  = var.kpi_kpi_database_password_default
   kpi_database_password_readonly = var.kpi_kpi_database_password_readonly
 
-  grafana_image        = "eu.gcr.io/serlo-shared/kpi-grafana:1.0.1"
-  mysql_importer_image = "eu.gcr.io/serlo-shared/kpi-mysql-importer:1.2.1"
-  aggregator_image     = "eu.gcr.io/serlo-shared/kpi-aggregator:1.3.2"
+  grafana_image        = "eu.gcr.io/serlo-shared/kpi-grafana:1.2.0"
+  mysql_importer_image = "eu.gcr.io/serlo-shared/kpi-mysql-importer:1.3.3"
+  aggregator_image     = "eu.gcr.io/serlo-shared/kpi-aggregator:1.5.0"
 }
 
 module "ingress-nginx" {
