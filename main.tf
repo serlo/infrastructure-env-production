@@ -7,7 +7,9 @@ locals {
 
   credentials_path = "secrets/serlo-production-terraform-af6ce169abd8.json"
   service_account  = "terraform@serlo-production.iam.gserviceaccount.com"
-  region           = "europe-west3"
+
+  region = "europe-west3"
+  zone   = "europe-west3-a"
 
   cluster_machine_type = "n1-highcpu-4"
 
@@ -30,72 +32,12 @@ locals {
 }
 
 #####################################################################
-# providers
-#####################################################################
-provider "cloudflare" {
-  version = "~> 2.0"
-  email   = var.cloudflare_email
-  api_key = var.cloudflare_token
-}
-
-provider "google" {
-  version     = "~> 2.18"
-  project     = local.project
-  credentials = file("${local.credentials_path}")
-}
-
-provider "google-beta" {
-  version     = "~> 2.18"
-  project     = local.project
-  credentials = file("${local.credentials_path}")
-}
-
-provider "helm" {
-  version = "~> 0.10"
-  kubernetes {
-    host     = module.cluster.endpoint
-    username = ""
-    password = ""
-
-    client_certificate     = base64decode(module.cluster.auth.client_certificate)
-    client_key             = base64decode(module.cluster.auth.client_key)
-    cluster_ca_certificate = base64decode(module.cluster.auth.cluster_ca_certificate)
-  }
-}
-
-provider "kubernetes" {
-  version          = "~> 1.8"
-  host             = module.cluster.endpoint
-  load_config_file = false
-
-  client_certificate     = base64decode(module.cluster.auth.client_certificate)
-  client_key             = base64decode(module.cluster.auth.client_key)
-  cluster_ca_certificate = base64decode(module.cluster.auth.cluster_ca_certificate)
-}
-
-provider "null" {
-  version = "~> 2.1"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 2.1"
-}
-
-provider "tls" {
-  version = "~> 2.1"
-}
-
-#####################################################################
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=152c6cc9dc948fdd63232ff803d3c5e90c6f6a01"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
   name     = "${local.project}-cluster"
-  location = "europe-west3-a"
+  location = local.zone
   region   = local.region
 
   node_pool = {
@@ -105,15 +47,10 @@ module "cluster" {
     min_node_count     = 2
     max_node_count     = 10
   }
-
-  providers = {
-    google      = google
-    google-beta = google-beta
-  }
 }
 
 module "gcloud_mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=152c6cc9dc948fdd63232ff803d3c5e90c6f6a01"
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
   database_instance_name     = local.athene2_database_instance_name
   database_connection_name   = "${local.project}:${local.region}:${local.athene2_database_instance_name}"
   database_region            = local.region
@@ -122,15 +59,10 @@ module "gcloud_mysql" {
   database_private_network   = module.cluster.network
   database_password_default  = var.athene2_database_password_default
   database_password_readonly = var.athene2_database_password_readonly
-
-  providers = {
-    google      = google
-    google-beta = google-beta
-  }
 }
 
 module "gcloud_postgres" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=152c6cc9dc948fdd63232ff803d3c5e90c6f6a01"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
@@ -142,15 +74,10 @@ module "gcloud_postgres" {
   database_password_default  = var.kpi_kpi_database_password_default
   database_username_readonly = module.kpi.kpi_database_username_readonly
   database_password_readonly = var.kpi_kpi_database_password_readonly
-
-  providers = {
-    google      = google
-    google-beta = google-beta
-  }
 }
 
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=972a0aab32801973cfc0f8d44f7676d16f7f9d08"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=40f6359ed6f0667fe14a651f8e4ba45a0d4066ba"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -235,16 +162,10 @@ module "serlo_org" {
     image        = local.varnish_image
     memory       = "1G"
   }
-
-  providers = {
-    kubernetes = kubernetes
-    random     = random
-    template   = template
-  }
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=972a0aab32801973cfc0f8d44f7676d16f7f9d08"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=40f6359ed6f0667fe14a651f8e4ba45a0d4066ba"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
@@ -260,23 +181,14 @@ module "athene2-dbdump" {
     url                 = "gs://anonymous-data"
     service_account_key = module.gcloud_dbdump_writer.account_key
   }
-
-  providers = {
-    kubernetes = kubernetes
-    template   = template
-  }
 }
 
 module "gcloud_dbdump_writer" {
-  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=193c415dc00b0a40e1790ad224864d3df6cfba3e"
-
-  providers = {
-    google = google
-  }
+  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
 }
 
 module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.3.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.3.1"
   domain = local.domain
 
   grafana_admin_password = var.kpi_grafana_admin_password
@@ -295,58 +207,38 @@ module "kpi" {
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=c331726b68a536449f88960458c6cb4297d6be46"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
   nginx_image = "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1"
-
-  providers = {
-    kubernetes = kubernetes
-    tls        = tls
-  }
 }
 
 module "cloudflare" {
-  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=5175dfff7cc6a52d85cc66ae8c690c67f5539200"
+  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=b5dbab5bfd6187f797066a8c74a795bc7d21cef5"
   domain  = local.domain
   ip      = module.cluster.address
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"
-
-  providers = {
-    cloudflare = cloudflare
-  }
 }
 
 module "hydra" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=c331726b68a536449f88960458c6cb4297d6be46"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://de.${local.domain}/auth/hydra/login"
   url_consent = "https://de.${local.domain}/auth/hydra/consent"
   host        = "hydra.${local.domain}"
   namespace   = kubernetes_namespace.hydra_namespace.metadata.0.name
-
-  providers = {
-    helm       = helm
-    kubernetes = kubernetes
-    random     = random
-    template   = template
-    tls        = tls
-  }
 }
 
 module "redis" {
-  source    = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=c331726b68a536449f88960458c6cb4297d6be46"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+
   namespace = kubernetes_namespace.redis_namespace.metadata.0.name
   image_tag = "5.0.7-debian-9-r12"
-
-  providers = {
-    helm = helm
-  }
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=c331726b68a536449f88960458c6cb4297d6be46"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
 
   host      = "community.${local.domain}"
   namespace = kubernetes_namespace.community_namespace.metadata.0.name
@@ -359,14 +251,6 @@ module "rocket-chat" {
   }
 
   smtp_password = var.athene2_php_smtp_password
-
-  providers = {
-    google     = google
-    helm       = helm
-    kubernetes = kubernetes
-    random     = random
-    template   = template
-  }
 }
 
 #####################################################################

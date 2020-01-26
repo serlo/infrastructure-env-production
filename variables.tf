@@ -25,10 +25,6 @@ variable "kpi_kpi_database_password_readonly" {
   description = "Password for readonly postgres user."
 }
 
-variable "cloudflare_email" {
-  description = "Email for cloudflare account."
-}
-
 variable "cloudflare_token" {
   description = "API Token for cloudflare account."
 }
