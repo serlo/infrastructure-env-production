@@ -207,7 +207,7 @@ module "kpi" {
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
@@ -222,7 +222,7 @@ module "cloudflare" {
 }
 
 module "hydra" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://de.${local.domain}/auth/hydra/login"
   url_consent = "https://de.${local.domain}/auth/hydra/consent"
@@ -231,14 +231,14 @@ module "hydra" {
 }
 
 module "redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
 
   namespace = kubernetes_namespace.redis_namespace.metadata.0.name
   image_tag = "5.0.7-debian-9-r12"
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
 
   host      = "community.${local.domain}"
   namespace = kubernetes_namespace.community_namespace.metadata.0.name
