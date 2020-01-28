@@ -15,13 +15,13 @@ locals {
 
   serlo_org_image_tags = {
     server = {
-      httpd             = "5.2.6"
-      php               = "5.2.6"
+      httpd             = "6.0.0"
+      php               = "6.0.0"
       notifications_job = "2.0.1"
     }
-    editor_renderer        = "4.0.5"
+    editor_renderer        = "5.0.0"
     legacy_editor_renderer = "2.0.0"
-    frontend               = "2.0.9"
+    frontend               = "3.0.0"
   }
   varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
 
@@ -207,7 +207,7 @@ module "kpi" {
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
@@ -222,7 +222,7 @@ module "cloudflare" {
 }
 
 module "hydra" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://de.${local.domain}/auth/hydra/login"
   url_consent = "https://de.${local.domain}/auth/hydra/consent"
@@ -231,18 +231,19 @@ module "hydra" {
 }
 
 module "redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
 
   namespace = kubernetes_namespace.redis_namespace.metadata.0.name
   image_tag = "5.0.7-debian-9-r12"
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=0a60181e6fc2c1001ec267dec1cd4382a054399a"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
 
-  host      = "community.${local.domain}"
-  namespace = kubernetes_namespace.community_namespace.metadata.0.name
-  image_tag = "2.2.1"
+  host         = "community.${local.domain}"
+  namespace    = kubernetes_namespace.community_namespace.metadata.0.name
+  image_tag    = "2.4.2"
+  app_replicas = 2
 
   mongodump = {
     image         = "eu.gcr.io/serlo-shared/mongodb-tools-base:1.0.1"
