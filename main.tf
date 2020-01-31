@@ -66,7 +66,7 @@ module "gcloud_postgres" {
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
-  database_names           = ["kpi", "hydra"]
+  database_names           = ["kpi", "hydra", "pact-broker"]
   database_private_network = module.cluster.network
 
   database_password_postgres = var.kpi_kpi_database_password_postgres
@@ -207,7 +207,7 @@ module "kpi" {
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
@@ -215,14 +215,14 @@ module "ingress-nginx" {
 }
 
 module "cloudflare" {
-  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=b5dbab5bfd6187f797066a8c74a795bc7d21cef5"
+  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=d262538a9933b75e27c05ad4398696b08ed0e9cf"
   domain  = local.domain
   ip      = module.cluster.address
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"
 }
 
 module "hydra" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://de.${local.domain}/auth/hydra/login"
   url_consent = "https://de.${local.domain}/auth/hydra/consent"
@@ -231,14 +231,14 @@ module "hydra" {
 }
 
 module "redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
 
   namespace = kubernetes_namespace.redis_namespace.metadata.0.name
   image_tag = "5.0.7-debian-9-r12"
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=d3bffe9d351f6b466636bf2ac6bdb27c8730fd31"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
 
   host         = "community.${local.domain}"
   namespace    = kubernetes_namespace.community_namespace.metadata.0.name
@@ -252,6 +252,20 @@ module "rocket-chat" {
   }
 
   smtp_password = var.athene2_php_smtp_password
+}
+
+module "pact_broker" {
+  source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
+
+  namespace         = kubernetes_namespace.pact_broker_namespace.metadata.0.name
+  image_tag         = "2.46.0-1"
+  image_pull_policy = "IfNotPresent"
+  database = {
+    host     = module.gcloud_postgres.database_private_ip_address
+    name     = "pact-broker"
+    username = module.kpi.kpi_database_username_default
+    password = var.kpi_kpi_database_password_default
+  }
 }
 
 #####################################################################
@@ -301,6 +315,34 @@ resource "kubernetes_ingress" "athene2_ingress" {
   }
 }
 
+resource "kubernetes_ingress" "pact_broker_ingress" {
+  metadata {
+    name      = "pact-broker-ingress"
+    namespace = kubernetes_namespace.pact_broker_namespace.metadata.0.name
+
+    annotations = {
+      "kubernetes.io/ingress.class" = "nginx"
+    }
+  }
+
+  spec {
+    rule {
+      host = "pacts.${local.domain}"
+
+      http {
+        path {
+          path = "/"
+
+          backend {
+            service_name = module.pact_broker.service_name
+            service_port = module.pact_broker.service_port
+          }
+        }
+      }
+    }
+  }
+}
+
 #####################################################################
 # namespaces
 #####################################################################
@@ -337,5 +379,11 @@ resource "kubernetes_namespace" "ingress_nginx_namespace" {
 resource "kubernetes_namespace" "redis_namespace" {
   metadata {
     name = "redis"
+  }
+}
+
+resource "kubernetes_namespace" "pact_broker_namespace" {
+  metadata {
+    name = "pact-broker"
   }
 }
