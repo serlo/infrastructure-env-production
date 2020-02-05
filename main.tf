@@ -15,13 +15,13 @@ locals {
 
   serlo_org_image_tags = {
     server = {
-      httpd             = "7.0.0"
-      php               = "7.0.0"
+      httpd             = "7.1.0"
+      php               = "7.1.0"
       notifications_job = "2.0.1"
     }
-    editor_renderer        = "6.0.1"
+    editor_renderer        = "6.1.0"
     legacy_editor_renderer = "2.0.0"
-    frontend               = "4.0.1"
+    frontend               = "4.1.0"
   }
   varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
 
