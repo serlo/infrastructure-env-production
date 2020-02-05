@@ -19,9 +19,9 @@ locals {
       php               = "7.0.0"
       notifications_job = "2.0.1"
     }
-    editor_renderer        = "6.0.0"
+    editor_renderer        = "6.0.1"
     legacy_editor_renderer = "2.0.0"
-    frontend               = "4.0.0"
+    frontend               = "4.0.1"
   }
   varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
 
