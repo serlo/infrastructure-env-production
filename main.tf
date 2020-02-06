@@ -222,40 +222,6 @@ module "cloudflare" {
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"
 }
 
-module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=f85d56e20608db92b30ec469b59b66876f08ce4a"
-
-  dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
-  url_login   = "https://de.${local.domain}/auth/hydra/login"
-  url_consent = "https://de.${local.domain}/auth/hydra/consent"
-  host        = "hydra.${local.domain}"
-  namespace   = kubernetes_namespace.hydra_namespace.metadata.0.name
-}
-
-module "redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=f85d56e20608db92b30ec469b59b66876f08ce4a"
-
-  namespace = kubernetes_namespace.redis_namespace.metadata.0.name
-  image_tag = "5.0.7-debian-9-r12"
-}
-
-module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=f85d56e20608db92b30ec469b59b66876f08ce4a"
-
-  host         = "community.${local.domain}"
-  namespace    = kubernetes_namespace.community_namespace.metadata.0.name
-  image_tag    = "2.4.2"
-  app_replicas = 2
-
-  mongodump = {
-    image         = "eu.gcr.io/serlo-shared/mongodb-tools-base:1.0.1"
-    schedule      = "0 0 * * *"
-    bucket_prefix = local.project
-  }
-
-  smtp_password = var.athene2_php_smtp_password
-}
-
 module "pact_broker" {
   source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
 
@@ -360,27 +326,9 @@ resource "kubernetes_namespace" "kpi_namespace" {
   }
 }
 
-resource "kubernetes_namespace" "community_namespace" {
-  metadata {
-    name = "community"
-  }
-}
-
-resource "kubernetes_namespace" "hydra_namespace" {
-  metadata {
-    name = "hydra"
-  }
-}
-
 resource "kubernetes_namespace" "ingress_nginx_namespace" {
   metadata {
     name = "ingress-nginx"
-  }
-}
-
-resource "kubernetes_namespace" "redis_namespace" {
-  metadata {
-    name = "redis"
   }
 }
 
