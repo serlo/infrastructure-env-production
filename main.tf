@@ -13,20 +13,6 @@ locals {
 
   cluster_machine_type = "n1-highcpu-4"
 
-  serlo_org_image_tags = {
-    server = {
-      httpd             = "7.1.0"
-      php               = "7.1.0"
-      notifications_job = "2.0.1"
-    }
-    editor_renderer        = "6.1.0"
-    legacy_editor_renderer = "2.0.0"
-    frontend               = "4.1.0"
-  }
-  varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
-
-  athene2_php_definitions-file_path = "secrets/athene2/definitions.production.php"
-
   athene2_database_instance_name = "${local.project}-mysql-2020-01-26"
   kpi_database_instance_name     = "${local.project}-postgres-2020-01-26"
 }
@@ -76,95 +62,6 @@ module "gcloud_postgres" {
   database_password_readonly = var.kpi_kpi_database_password_readonly
 }
 
-module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=c06694b40ac37bb2d5180dc7d05cd2cc521d4793"
-
-  namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
-  image_pull_policy = "IfNotPresent"
-
-  server = {
-    app_replicas = 5
-    image_tags   = local.serlo_org_image_tags.server
-
-    domain                = local.domain
-    definitions_file_path = local.athene2_php_definitions-file_path
-
-    resources = {
-      httpd = {
-        limits = {
-          cpu    = "400m"
-          memory = "500Mi"
-        }
-        requests = {
-          cpu    = "250m"
-          memory = "200Mi"
-        }
-      }
-      php = {
-        limits = {
-          cpu    = "2000m"
-          memory = "500Mi"
-        }
-        requests = {
-          cpu    = "250m"
-          memory = "200Mi"
-        }
-      }
-    }
-
-    recaptcha = {
-      key    = var.athene2_php_recaptcha_key
-      secret = var.athene2_php_recaptcha_secret
-    }
-
-    smtp_password = var.athene2_php_smtp_password
-    mailchimp_key = var.athene2_php_newsletter_key
-
-    enable_tracking   = true
-    enable_basic_auth = false
-    enable_cronjobs   = true
-    enable_mail_mock  = false
-
-    database = {
-      host     = module.gcloud_mysql.database_private_ip_address
-      username = "serlo"
-      password = var.athene2_database_password_default
-    }
-
-    database_readonly = {
-      username = "serlo_readonly"
-      password = var.athene2_database_password_readonly
-    }
-
-    upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
-    hydra_admin_uri = module.hydra.admin_uri
-    feature_flags   = "[]"
-    redis_hosts     = "['redis-master.redis']"
-    kafka_host      = ""
-  }
-
-  editor_renderer = {
-    app_replicas = 2
-    image_tag    = local.serlo_org_image_tags.editor_renderer
-  }
-
-  legacy_editor_renderer = {
-    app_replicas = 2
-    image_tag    = local.serlo_org_image_tags.legacy_editor_renderer
-  }
-
-  frontend = {
-    app_replicas = 2
-    image_tag    = local.serlo_org_image_tags.frontend
-  }
-
-  varnish = {
-    app_replicas = 1
-    image        = local.varnish_image
-    memory       = "1G"
-  }
-}
-
 module "athene2-dbdump" {
   source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=40f6359ed6f0667fe14a651f8e4ba45a0d4066ba"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
@@ -186,25 +83,6 @@ module "athene2-dbdump" {
 
 module "gcloud_dbdump_writer" {
   source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
-}
-
-module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v1.3.1"
-  domain = local.domain
-
-  grafana_admin_password = var.kpi_grafana_admin_password
-  grafana_serlo_password = var.kpi_grafana_serlo_password
-
-  athene2_database_host              = module.gcloud_mysql.database_private_ip_address
-  athene2_database_password_readonly = var.athene2_database_password_readonly
-
-  kpi_database_host              = module.gcloud_postgres.database_private_ip_address
-  kpi_database_password_default  = var.kpi_kpi_database_password_default
-  kpi_database_password_readonly = var.kpi_kpi_database_password_readonly
-
-  grafana_image        = "eu.gcr.io/serlo-shared/kpi-grafana:1.2.0"
-  mysql_importer_image = "eu.gcr.io/serlo-shared/kpi-mysql-importer:1.3.3"
-  aggregator_image     = "eu.gcr.io/serlo-shared/kpi-aggregator:1.5.0"
 }
 
 module "ingress-nginx" {
@@ -239,50 +117,6 @@ module "pact_broker" {
 #####################################################################
 # ingress
 #####################################################################
-resource "kubernetes_ingress" "kpi_ingress" {
-  metadata {
-    name      = "kpi-ingress"
-    namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
-
-    annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
-    }
-  }
-
-  spec {
-    rule {
-      host = "stats.${local.domain}"
-
-      http {
-        path {
-          path = "/"
-
-          backend {
-            service_name = module.kpi.grafana_service_name
-            service_port = module.kpi.grafana_service_port
-          }
-        }
-      }
-    }
-  }
-}
-
-resource "kubernetes_ingress" "athene2_ingress" {
-  metadata {
-    name      = "athene2-ingress"
-    namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
-
-    annotations = { "kubernetes.io/ingress.class" = "nginx" }
-  }
-
-  spec {
-    backend {
-      service_name = module.serlo_org.service_name
-      service_port = module.serlo_org.service_port
-    }
-  }
-}
-
 resource "kubernetes_ingress" "pact_broker_ingress" {
   metadata {
     name      = "pact-broker-ingress"
@@ -314,18 +148,6 @@ resource "kubernetes_ingress" "pact_broker_ingress" {
 #####################################################################
 # namespaces
 #####################################################################
-resource "kubernetes_namespace" "serlo_org_namespace" {
-  metadata {
-    name = "serlo-org"
-  }
-}
-
-resource "kubernetes_namespace" "kpi_namespace" {
-  metadata {
-    name = "kpi"
-  }
-}
-
 resource "kubernetes_namespace" "ingress_nginx_namespace" {
   metadata {
     name = "ingress-nginx"
