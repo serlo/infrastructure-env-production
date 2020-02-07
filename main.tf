@@ -100,62 +100,11 @@ module "cloudflare" {
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"
 }
 
-module "pact_broker" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
-
-  namespace         = kubernetes_namespace.pact_broker_namespace.metadata.0.name
-  image_tag         = "2.46.0-1"
-  image_pull_policy = "IfNotPresent"
-  database = {
-    host     = module.gcloud_postgres.database_private_ip_address
-    name     = "pact-broker"
-    username = module.kpi.kpi_database_username_default
-    password = var.kpi_kpi_database_password_default
-  }
-}
-
-#####################################################################
-# ingress
-#####################################################################
-resource "kubernetes_ingress" "pact_broker_ingress" {
-  metadata {
-    name      = "pact-broker-ingress"
-    namespace = kubernetes_namespace.pact_broker_namespace.metadata.0.name
-
-    annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
-    }
-  }
-
-  spec {
-    rule {
-      host = "pacts.${local.domain}"
-
-      http {
-        path {
-          path = "/"
-
-          backend {
-            service_name = module.pact_broker.service_name
-            service_port = module.pact_broker.service_port
-          }
-        }
-      }
-    }
-  }
-}
-
 #####################################################################
 # namespaces
 #####################################################################
 resource "kubernetes_namespace" "ingress_nginx_namespace" {
   metadata {
     name = "ingress-nginx"
-  }
-}
-
-resource "kubernetes_namespace" "pact_broker_namespace" {
-  metadata {
-    name = "pact-broker"
   }
 }
