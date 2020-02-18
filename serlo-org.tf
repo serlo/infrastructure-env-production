@@ -21,7 +21,7 @@ module "serlo_org" {
   image_pull_policy = "IfNotPresent"
 
   server = {
-    app_replicas = 5
+    app_replicas = 3
     image_tags   = local.serlo_org.image_tags.server
 
     domain                = local.domain
@@ -31,20 +31,20 @@ module "serlo_org" {
       httpd = {
         limits = {
           cpu    = "400m"
-          memory = "500Mi"
+          memory = "200Mi"
         }
         requests = {
           cpu    = "250m"
-          memory = "200Mi"
+          memory = "100Mi"
         }
       }
       php = {
         limits = {
-          cpu    = "2000m"
+          cpu    = "4000m"
           memory = "500Mi"
         }
         requests = {
-          cpu    = "250m"
+          cpu    = "750m"
           memory = "200Mi"
         }
       }
