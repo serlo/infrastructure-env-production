@@ -2,20 +2,21 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "7.1.1"
-        php               = "7.1.1"
+        httpd             = "7.2.0"
+        php               = "7.2.0"
+        migrate           = "7.2.0"
         notifications_job = "2.1.0"
       }
-      editor_renderer        = "6.2.2"
+      editor_renderer        = "7.0.0"
       legacy_editor_renderer = "2.1.0"
-      frontend               = "4.2.2"
+      frontend               = "5.0.0"
     }
     varnish_image                     = "eu.gcr.io/serlo-shared/varnish:6.0"
     athene2_php_definitions-file_path = "secrets/athene2/definitions.dev.php"
   }
 }
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=c06694b40ac37bb2d5180dc7d05cd2cc521d4793"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=abaefb98e1e2eb11b99207e2383325b85f09a200"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
