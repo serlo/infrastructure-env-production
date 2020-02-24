@@ -2,14 +2,14 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "8.0.0"
-        php               = "8.0.0"
-        migrate           = "8.0.0"
+        httpd             = "9.0.0"
+        php               = "9.0.0"
+        migrate           = "9.0.0"
         notifications_job = "2.1.0"
       }
-      editor_renderer        = "7.0.0"
+      editor_renderer        = "8.0.0"
       legacy_editor_renderer = "2.1.0"
-      frontend               = "5.0.0"
+      frontend               = "6.0.0"
     }
     varnish_image                     = "eu.gcr.io/serlo-shared/varnish:6.0"
     athene2_php_definitions-file_path = "secrets/athene2/definitions.dev.php"
