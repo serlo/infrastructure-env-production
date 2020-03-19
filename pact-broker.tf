@@ -1,5 +1,5 @@
 module "pact_broker" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=3150640383eebf21c68fb27bd02b86baaf85757d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=4c3c64824e817ba4576b4249f0b35df66ce7d60f"
 
   namespace         = kubernetes_namespace.pact_broker_namespace.metadata.0.name
   image_tag         = "2.50.1-1"
@@ -13,7 +13,7 @@ module "pact_broker" {
 }
 
 module "pact_broker_ingress" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=c41476e253475fa2eacbada4228074dd6d7df58f"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=4c3c64824e817ba4576b4249f0b35df66ce7d60f"
 
   name      = "pact-broker"
   namespace = kubernetes_namespace.pact_broker_namespace.metadata.0.name
