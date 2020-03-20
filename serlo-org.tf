@@ -2,21 +2,20 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "9.0.0"
-        php               = "9.0.0"
-        migrate           = "9.0.0"
+        httpd             = "10.0.0"
+        php               = "10.0.0"
+        migrate           = "10.0.0"
         notifications_job = "2.1.0"
       }
-      editor_renderer        = "8.0.0"
+      editor_renderer        = "8.1.0"
       legacy_editor_renderer = "2.1.0"
       frontend               = "6.0.0"
     }
-    varnish_image                     = "eu.gcr.io/serlo-shared/varnish:6.0"
-    athene2_php_definitions-file_path = "secrets/athene2/definitions.dev.php"
+    varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
   }
 }
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=ca3d3009fd22884780348bdb94fa6c69a0ace761"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=2a6dd4a18340d8399fd2896855f458ecc1080e09"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -25,8 +24,7 @@ module "serlo_org" {
     app_replicas = 5
     image_tags   = local.serlo_org.image_tags.server
 
-    domain                = local.domain
-    definitions_file_path = local.serlo_org.athene2_php_definitions-file_path
+    domain = local.domain
 
     resources = {
       httpd = {
@@ -78,7 +76,6 @@ module "serlo_org" {
     upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
     hydra_admin_uri = module.hydra.admin_uri
     feature_flags   = "[]"
-    redis_hosts     = "['redis-master.redis']"
   }
 
   editor_renderer = {
@@ -89,11 +86,6 @@ module "serlo_org" {
   legacy_editor_renderer = {
     app_replicas = 2
     image_tag    = local.serlo_org.image_tags.legacy_editor_renderer
-  }
-
-  frontend = {
-    app_replicas = 2
-    image_tag    = local.serlo_org.image_tags.frontend
   }
 
   varnish = {
