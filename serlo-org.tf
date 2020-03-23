@@ -2,9 +2,9 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "10.0.0"
-        php               = "10.0.0"
-        migrate           = "10.0.0"
+        httpd             = "10.1.0"
+        php               = "10.1.0"
+        migrate           = "10.1.0"
         notifications_job = "2.1.0"
       }
       editor_renderer        = "8.1.0"
@@ -21,7 +21,7 @@ module "serlo_org" {
   image_pull_policy = "IfNotPresent"
 
   server = {
-    app_replicas = 5
+    app_replicas = 3
     image_tags   = local.serlo_org.image_tags.server
 
     domain = local.domain
