@@ -21,7 +21,7 @@ module "serlo_org" {
   image_pull_policy = "IfNotPresent"
 
   server = {
-    app_replicas = 3
+    app_replicas = 5
     image_tags   = local.serlo_org.image_tags.server
 
     domain = local.domain
