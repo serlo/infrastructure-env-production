@@ -63,7 +63,7 @@ module "gcloud_postgres" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=40f6359ed6f0667fe14a651f8e4ba45a0d4066ba"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=c878e860fa48c337a6d1a40ee21c983f26a39dfa"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
