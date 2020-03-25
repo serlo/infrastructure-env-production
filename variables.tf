@@ -53,3 +53,19 @@ variable "athene2_php_newsletter_key" {
 variable "kpi_grafana_serlo_password" {
   description = "Password for grafana serlo user"
 }
+
+variable "api_cache_account" {
+  description = "Cloudflare account for API cache"
+  type        = string
+}
+
+variable "api_cache_namespace" {
+  description = "Cloudflare Worker KV namespace for API cache"
+  type        = string
+}
+
+variable "api_cache_token" {
+  description = "Cloudflare API token for API cache"
+  type        = string
+}
+
