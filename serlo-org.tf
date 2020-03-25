@@ -15,22 +15,21 @@ locals {
   }
 }
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=8d6e1782037a9e45c462fb6656cf21be6d1d9a7a"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=fc5f5e664a7a2f6a682da4b49b2ee6326f49785c"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
 
   server = {
-    app_replicas = 3
-    image_tags   = local.serlo_org.image_tags.server
+    image_tags = local.serlo_org.image_tags.server
 
     domain = local.domain
 
     resources = {
       httpd = {
         limits = {
-          cpu    = "400m"
-          memory = "200Mi"
+          cpu    = "375m"
+          memory = "150Mi"
         }
         requests = {
           cpu    = "250m"
@@ -39,8 +38,8 @@ module "serlo_org" {
       }
       php = {
         limits = {
-          cpu    = "4000m"
-          memory = "500Mi"
+          cpu    = "1125m"
+          memory = "300Mi"
         }
         requests = {
           cpu    = "750m"
@@ -57,7 +56,6 @@ module "serlo_org" {
     smtp_password = var.athene2_php_smtp_password
     mailchimp_key = var.athene2_php_newsletter_key
 
-    enable_tracking   = true
     enable_basic_auth = false
     enable_cronjobs   = true
     enable_mail_mock  = false
@@ -82,6 +80,11 @@ module "serlo_org" {
       namespace = var.api_cache_namespace
       token     = var.api_cache_token
     }
+
+    enable_tracking_hotjar           = true
+    enable_tracking_google_analytics = true
+    enable_tracking_matomo           = false
+    matomo_tracking_domain           = "analytics.${local.domain}"
   }
 
   editor_renderer = {
