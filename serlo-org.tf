@@ -9,13 +9,12 @@ locals {
       }
       editor_renderer        = "8.1.0"
       legacy_editor_renderer = "2.1.0"
-      frontend               = "6.0.0"
+      varnish                = "6.0.2"
     }
-    varnish_image = "eu.gcr.io/serlo-shared/varnish:6.0"
   }
 }
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=fc5f5e664a7a2f6a682da4b49b2ee6326f49785c"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=3af3235ded79af71217365b405fe1ce8c6eaf7cf"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -24,29 +23,6 @@ module "serlo_org" {
     image_tags = local.serlo_org.image_tags.server
 
     domain = local.domain
-
-    resources = {
-      httpd = {
-        limits = {
-          cpu    = "375m"
-          memory = "150Mi"
-        }
-        requests = {
-          cpu    = "250m"
-          memory = "100Mi"
-        }
-      }
-      php = {
-        limits = {
-          cpu    = "1125m"
-          memory = "300Mi"
-        }
-        requests = {
-          cpu    = "750m"
-          memory = "200Mi"
-        }
-      }
-    }
 
     recaptcha = {
       key    = var.athene2_php_recaptcha_key
@@ -88,19 +64,15 @@ module "serlo_org" {
   }
 
   editor_renderer = {
-    app_replicas = 2
-    image_tag    = local.serlo_org.image_tags.editor_renderer
+    image_tag = local.serlo_org.image_tags.editor_renderer
   }
 
   legacy_editor_renderer = {
-    app_replicas = 2
-    image_tag    = local.serlo_org.image_tags.legacy_editor_renderer
+    image_tag = local.serlo_org.image_tags.legacy_editor_renderer
   }
 
   varnish = {
-    app_replicas = 1
-    image        = local.serlo_org.varnish_image
-    memory       = "1G"
+    image_tag = local.serlo_org.image_tags.varnish
   }
 }
 
