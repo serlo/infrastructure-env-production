@@ -2,9 +2,9 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "10.2.1"
-        php               = "10.2.1"
-        migrate           = "10.2.1"
+        httpd             = "11.0.0"
+        php               = "11.0.0"
+        migrate           = "11.0.0"
         notifications_job = "2.1.0"
       }
       editor_renderer        = "8.1.0"
@@ -13,8 +13,9 @@ locals {
     }
   }
 }
+
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=3af3235ded79af71217365b405fe1ce8c6eaf7cf"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=e1f7e2942ab2bc4a8307f0e67985f4bed0692162"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -51,10 +52,9 @@ module "serlo_org" {
     hydra_admin_uri = module.hydra.admin_uri
     feature_flags   = "[]"
 
-    api_cache = {
-      account   = var.api_cache_account
-      namespace = var.api_cache_namespace
-      token     = var.api_cache_token
+    api = {
+      host   = module.api_server.host
+      secret = module.api_secrets.serlo_org
     }
 
     enable_tracking_hotjar           = true
