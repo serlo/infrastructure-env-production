@@ -1,15 +1,15 @@
 locals {
   api = {
-    image_tag = "0.1.1"
+    image_tag = "0.2.0"
   }
 }
 
 module "api_secrets" {
-  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=a4c13d2bb16b28c4258a0ce4c035b23f5a54fa43"
+  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=787786d3cce36d2c087c784a59f0e4575fbc1093"
 }
 
 module "api_server" {
-  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=a4c13d2bb16b28c4258a0ce4c035b23f5a54fa43"
+  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=787786d3cce36d2c087c784a59f0e4575fbc1093"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tag
