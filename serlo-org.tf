@@ -2,9 +2,9 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "11.0.2"
-        php               = "11.0.2"
-        migrate           = "11.0.2"
+        httpd             = "11.1.0"
+        php               = "11.1.0"
+        migrate           = "11.1.0"
         notifications_job = "2.1.0"
       }
       editor_renderer        = "8.1.0"
@@ -15,7 +15,7 @@ locals {
 }
 
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=e1f7e2942ab2bc4a8307f0e67985f4bed0692162"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=b3a6527c66778ed6fe4e2051280d4fd4797afd5d"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
