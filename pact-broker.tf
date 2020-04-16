@@ -2,7 +2,7 @@ module "pact_broker" {
   source = "github.com/serlo/infrastructure-modules-shared.git//pact-broker?ref=4c3c64824e817ba4576b4249f0b35df66ce7d60f"
 
   namespace         = kubernetes_namespace.pact_broker_namespace.metadata.0.name
-  image_tag         = "2.50.1-1"
+  image_tag         = "2.52.2-1"
   image_pull_policy = "IfNotPresent"
   database = {
     host     = module.gcloud_postgres.database_private_ip_address
