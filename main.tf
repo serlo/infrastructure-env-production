@@ -52,7 +52,7 @@ module "gcloud_postgres" {
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
-  database_names           = ["kpi", "hydra", "pact-broker"]
+  database_names           = ["kpi", "hydra"]
   database_private_network = module.cluster.network
 
   database_password_postgres = var.kpi_kpi_database_password_postgres
