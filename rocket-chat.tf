@@ -1,7 +1,7 @@
 locals {
   rocket_chat = {
     chart_version = "2.0.2"
-    image_tag     = "3.1.1"
+    image_tag     = "3.2.0"
   }
 }
 
