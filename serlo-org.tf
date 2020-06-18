@@ -81,7 +81,10 @@ resource "kubernetes_ingress" "athene2_ingress" {
     name      = "athene2-ingress"
     namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
 
-    annotations = { "kubernetes.io/ingress.class" = "nginx" }
+    annotations = {
+      "kubernetes.io/ingress.class"                 = "nginx"
+      "nginx.ingress.kubernetes.io/proxy-body-size" = "2M"
+    }
   }
 
   spec {
