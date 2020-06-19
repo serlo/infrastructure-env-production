@@ -2,9 +2,9 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "13.3.3"
-        php               = "13.3.3"
-        migrate           = "13.3.3"
+        httpd             = "13.4.0"
+        php               = "13.4.0"
+        migrate           = "13.4.0"
         notifications_job = "2.1.0"
       }
       editor_renderer        = "9.0.1"
@@ -15,7 +15,7 @@ locals {
 }
 
 module "serlo_org" {
-  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=8efe1179e4ad1a87859e07cd28e161fe743b8c78"
+  source = "github.com/serlo/infrastructure-modules-serlo.org.git//?ref=2841cc287008ac47c4964ecfc39a474975bf77dc"
 
   namespace         = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   image_pull_policy = "IfNotPresent"
@@ -48,9 +48,10 @@ module "serlo_org" {
       password = var.athene2_database_password_readonly
     }
 
-    upload_secret   = file("secrets/serlo-org-6bab84a1b1a5.json")
-    hydra_admin_uri = module.hydra.admin_uri
-    feature_flags   = "[]"
+    upload_secret                = file("secrets/serlo-org-6bab84a1b1a5.json")
+    hydra_admin_uri              = module.hydra.admin_uri
+    feature_flags                = "[]"
+    autoreview_taxonomy_term_ids = "[106082]"
 
     api = {
       host   = module.api_server.host
