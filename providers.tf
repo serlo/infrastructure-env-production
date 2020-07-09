@@ -4,7 +4,7 @@ provider "cloudflare" {
 }
 
 provider "google" {
-  version     = "3.28.0"
+  version     = "3.29.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }

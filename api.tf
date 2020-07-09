@@ -5,7 +5,7 @@ locals {
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=46399534a03aca5dfd1b95d9ec11c37d2b85523f"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=9b7a486cf487a79069e4a0c7806de0666f78a0c4"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
   chart_version = "10.5.7"
@@ -29,7 +29,7 @@ module "api_server" {
 }
 
 module "api_server_ingress" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=46399534a03aca5dfd1b95d9ec11c37d2b85523f"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=9b7a486cf487a79069e4a0c7806de0666f78a0c4"
 
   name      = "api"
   namespace = kubernetes_namespace.api_namespace.metadata.0.name
