@@ -1,22 +1,22 @@
 provider "cloudflare" {
-  version   = "2.7.0"
+  version   = "2.9.0"
   api_token = var.cloudflare_token
 }
 
 provider "google" {
-  version     = "3.30.0"
+  version     = "3.32.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
 
 provider "google-beta" {
-  version     = "3.28.0"
+  version     = "3.32.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
 
 provider "helm" {
-  version = "1.2.3"
+  version = "1.2.4"
   kubernetes {
     host     = module.cluster.endpoint
     username = ""
@@ -29,7 +29,7 @@ provider "helm" {
 }
 
 provider "kubernetes" {
-  version          = "1.11.3"
+  version          = "1.12.0"
   host             = module.cluster.endpoint
   load_config_file = false
 
