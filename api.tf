@@ -1,6 +1,6 @@
 locals {
   api = {
-    image_tag = "0.5.7"
+    image_tag = "0.9.0"
   }
 }
 
@@ -13,11 +13,11 @@ module "api_redis" {
 }
 
 module "api_secrets" {
-  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=3ad43a12c6a793738c0f2d425dc26631a3a7caaf"
+  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=9bdfc0b4c46ad57f95620ff79457fc519d3e0000"
 }
 
 module "api_server" {
-  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=3ad43a12c6a793738c0f2d425dc26631a3a7caaf"
+  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=9bdfc0b4c46ad57f95620ff79457fc519d3e0000"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tag
@@ -27,6 +27,14 @@ module "api_server" {
   redis_host           = "redis-master"
   hydra_host           = module.hydra.admin_uri
   serlo_org_ip_address = module.serlo_org.server_service_ip_address
+
+  active_donors_data = {
+    google_api_key        = var.api_active_donors_google_api_key
+    google_spreadsheet_id = var.api_active_donors_google_spreadsheet_id
+  }
+
+  sentry_dsn         = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
+  sentry_environment = "production"
 }
 
 module "api_server_ingress" {

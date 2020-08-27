@@ -53,3 +53,11 @@ variable "athene2_php_newsletter_key" {
 variable "kpi_grafana_serlo_password" {
   description = "Password for grafana serlo user"
 }
+
+variable "api_active_donors_google_api_key" {
+  type = string
+}
+
+variable "api_active_donors_google_spreadsheet_id" {
+  type = string
+}
