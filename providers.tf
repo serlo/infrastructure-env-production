@@ -4,19 +4,19 @@ provider "cloudflare" {
 }
 
 provider "google" {
-  version     = "3.40.0"
+  version     = "3.41.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
 
 provider "google-beta" {
-  version     = "3.40.0"
+  version     = "3.41.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
 
 provider "helm" {
-  version = "1.3.0"
+  version = "1.3.1"
   kubernetes {
     host     = module.cluster.endpoint
     username = ""
