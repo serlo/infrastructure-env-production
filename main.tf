@@ -21,7 +21,7 @@ locals {
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=8e08ef09c2dca491cad4afa0406520ac210641c6"
   name     = "${local.project}-cluster"
   location = local.zone
   region   = local.region
@@ -36,7 +36,7 @@ module "cluster" {
 }
 
 module "gcloud_mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=8e08ef09c2dca491cad4afa0406520ac210641c6"
   database_instance_name     = local.athene2_database_instance_name
   database_connection_name   = "${local.project}:${local.region}:${local.athene2_database_instance_name}"
   database_region            = local.region
@@ -48,7 +48,7 @@ module "gcloud_mysql" {
 }
 
 module "gcloud_postgres" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=8e08ef09c2dca491cad4afa0406520ac210641c6"
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
@@ -63,7 +63,7 @@ module "gcloud_postgres" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=2841cc287008ac47c4964ecfc39a474975bf77dc"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=777314d6f13f4877b056421c71069838bafff679"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
@@ -82,11 +82,11 @@ module "athene2-dbdump" {
 }
 
 module "gcloud_dbdump_writer" {
-  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=eac9c2757582cc3483310fa8649fa43904cb3c6b"
+  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=8e08ef09c2dca491cad4afa0406520ac210641c6"
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=9b7a486cf487a79069e4a0c7806de0666f78a0c4"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=34a6da8a720f4b8b3a381d57551f4c6bf6de1249"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
@@ -94,7 +94,7 @@ module "ingress-nginx" {
 }
 
 module "cloudflare" {
-  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=ac5cbca76483550d193910b9732644bc48ed345b"
+  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=0274b754c05cc028e83d3ad8aa39638b0e2044d7"
   domain  = local.domain
   ip      = module.cluster.address
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"

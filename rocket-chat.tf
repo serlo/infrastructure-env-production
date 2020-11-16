@@ -1,12 +1,12 @@
 locals {
   rocket_chat = {
     chart_version = "2.0.7"
-    image_tag     = "3.8.0-rc.2"
+    image_tag     = "3.8.0"
   }
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=9b7a486cf487a79069e4a0c7806de0666f78a0c4"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=34a6da8a720f4b8b3a381d57551f4c6bf6de1249"
 
   host          = "community.${local.domain}"
   namespace     = kubernetes_namespace.community_namespace.metadata.0.name
