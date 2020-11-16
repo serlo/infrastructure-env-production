@@ -6,7 +6,7 @@ locals {
 }
 
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=9b7a486cf487a79069e4a0c7806de0666f78a0c4"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=34a6da8a720f4b8b3a381d57551f4c6bf6de1249"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"

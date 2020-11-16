@@ -1,16 +1,16 @@
 provider "cloudflare" {
-  version   = "2.12.0"
+  version   = "2.13.2"
   api_token = var.cloudflare_token
 }
 
 provider "google" {
-  version     = "3.44.0"
+  version     = "3.47.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
 
 provider "google-beta" {
-  version     = "3.44.0"
+  version     = "3.47.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
