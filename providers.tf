@@ -8,7 +8,6 @@ provider "google" {
 }
 
 provider "google-beta" {
-  version     = "3.47.0"
   project     = local.project
   credentials = file(local.credentials_path)
 }
