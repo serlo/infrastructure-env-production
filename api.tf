@@ -1,6 +1,6 @@
 locals {
   api = {
-    image_tag = "0.11.0"
+    image_tag = "0.11.1"
   }
 }
 
