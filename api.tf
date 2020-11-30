@@ -5,11 +5,11 @@ locals {
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=146b864cb2d5d91373bbf493e7954051faaab15d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=5efa649a5978f5abb585c597f8b3a5fa7fabe19f"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
-  chart_version = "10.5.7"
-  image_tag     = "4.0.14"
+  chart_version = "10.9.0"
+  image_tag     = "6.0.9"
 }
 
 module "api_secrets" {
