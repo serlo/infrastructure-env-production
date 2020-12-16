@@ -3,15 +3,15 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "2.13.2"
+      version = "2.14.0"
     }
     google = {
       source  = "hashicorp/google"
-      version = "3.48.0"
+      version = "3.51.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "3.48.0"
+      version = "3.51.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -19,7 +19,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.13.2"
+      version = "1.13.3"
     }
     null = {
       source  = "hashicorp/null"

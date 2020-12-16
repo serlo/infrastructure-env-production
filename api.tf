@@ -1,6 +1,6 @@
 locals {
   api = {
-    image_tag = "0.11.2"
+    image_tag = "0.13.1"
   }
 }
 
@@ -13,18 +13,18 @@ module "api_redis" {
 }
 
 module "api_secrets" {
-  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=342c7f3b0a39e026a918e69c37f1ec9b97357594"
+  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=7c02339918fdbd7effac88957d72f79c28e7710c"
 }
 
 module "api_server" {
-  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=342c7f3b0a39e026a918e69c37f1ec9b97357594"
+  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=7c02339918fdbd7effac88957d72f79c28e7710c"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tag
   image_pull_policy = "IfNotPresent"
 
   secrets              = module.api_secrets
-  redis_host           = "redis-master"
+  redis_url            = "redis://redis-master:6379"
   hydra_host           = module.hydra.admin_uri
   serlo_org_ip_address = module.serlo_org.server_service_ip_address
 
