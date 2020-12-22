@@ -1,41 +1,41 @@
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 0.14"
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "2.14.0"
+      version = "~> 2.0"
     }
     google = {
       source  = "hashicorp/google"
-      version = "3.51.0"
+      version = "~> 3.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "3.51.0"
+      version = "~> 3.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "1.3.2"
+      version = "~> 2.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.13.3"
+      version = "~> 1.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "2.1.2"
+      version = "~> 2.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "2.2.1"
+      version = "~> 2.0"
     }
     template = {
       source  = "hashicorp/template"
-      version = "2.1.2"
+      version = "~> 2.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "2.1.1"
+      version = "~> 2.0"
     }
   }
 }

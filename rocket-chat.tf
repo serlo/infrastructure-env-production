@@ -6,7 +6,7 @@ locals {
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=146b864cb2d5d91373bbf493e7954051faaab15d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=v2.0.0"
 
   host          = "community.${local.domain}"
   namespace     = kubernetes_namespace.community_namespace.metadata.0.name
