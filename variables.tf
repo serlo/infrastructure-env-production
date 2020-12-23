@@ -61,3 +61,11 @@ variable "api_active_donors_google_api_key" {
 variable "api_active_donors_google_spreadsheet_id" {
   type = string
 }
+
+variable "api_swr_queue_dashboard_username" {
+  type = string
+}
+
+variable "api_swr_queue_dashboard_password" {
+  type = string
+}

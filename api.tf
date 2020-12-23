@@ -1,6 +1,6 @@
 locals {
   api = {
-    image_tag = "0.13.1"
+    image_tag = "0.14.0"
   }
 }
 
@@ -13,11 +13,11 @@ module "api_redis" {
 }
 
 module "api_secrets" {
-  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=v1.0.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//secrets?ref=v2.0.0"
 }
 
 module "api_server" {
-  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=v1.0.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//server?ref=v2.0.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tag
@@ -35,6 +35,11 @@ module "api_server" {
 
   sentry_dsn         = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
   sentry_environment = "production"
+
+  swr_queue_dashboard_secret = {
+    username = var.api_swr_queue_dashboard_username
+    password = var.api_swr_queue_dashboard_password
+  }
 }
 
 module "api_server_ingress" {
