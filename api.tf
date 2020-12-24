@@ -1,11 +1,11 @@
 locals {
   api = {
-    image_tag = "0.14.1"
+    image_tag = "0.14.2"
   }
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v2.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v2.0.1"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
   chart_version = "10.9.0"
