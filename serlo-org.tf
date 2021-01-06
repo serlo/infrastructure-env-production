@@ -54,8 +54,8 @@ module "serlo_org" {
     autoreview_taxonomy_term_ids = "[106082]"
 
     api = {
-      host   = module.api_server.host
-      secret = module.api_secrets.serlo_org
+      host   = module.api.server_host
+      secret = module.api.secrets_serlo_org
     }
 
     enable_tracking_hotjar           = false
