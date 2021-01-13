@@ -1,6 +1,6 @@
 locals {
   api = {
-    image_tag = "0.16.1"
+    image_tag = "0.17.1"
   }
 }
 
@@ -13,7 +13,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v3.0.1"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v4.0.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tag
@@ -27,6 +27,13 @@ module "api" {
   redis_url            = "redis://redis-master:6379"
   sentry_dsn           = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
   serlo_org_ip_address = module.serlo_org.server_service_ip_address
+
+  database_layer = {
+    image_tag = "0.1.2"
+
+    database_url             = "mysql://serlo_readonly:${var.athene2_database_password_readonly}@${module.gcloud_mysql.database_private_ip_address}:3306/serlo"
+    database_max_connections = 50
+  }
 
   server = {
     hydra_host = module.hydra.admin_uri
