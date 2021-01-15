@@ -1,9 +1,9 @@
 locals {
   api = {
-    image_tag = "0.17.2"
+    server_image_tag         = "0.17.3"
+    database_layer_image_tag = "0.1.5"
   }
 }
-
 module "api_redis" {
   source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v2.0.1"
 
@@ -16,7 +16,7 @@ module "api" {
   source = "github.com/serlo/infrastructure-modules-api.git//?ref=v4.1.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
-  image_tag         = local.api.image_tag
+  image_tag         = local.api.server_image_tag
   image_pull_policy = "IfNotPresent"
 
   environment = "production"
@@ -29,7 +29,7 @@ module "api" {
   serlo_org_ip_address = module.serlo_org.server_service_ip_address
 
   database_layer = {
-    image_tag = "0.1.4"
+    image_tag = local.api.database_layer_image_tag
 
     database_url             = "mysql://serlo_readonly:${var.athene2_database_password_readonly}@${module.gcloud_mysql.database_private_ip_address}:3306/serlo"
     database_max_connections = 50
