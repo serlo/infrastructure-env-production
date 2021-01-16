@@ -1,7 +1,7 @@
 locals {
   api = {
-    server_image_tag         = "0.17.3"
-    database_layer_image_tag = "0.1.5"
+    server_image_tag         = "0.17.4"
+    database_layer_image_tag = "0.1.6"
   }
 }
 module "api_redis" {
