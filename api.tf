@@ -8,11 +8,11 @@ locals {
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v2.0.1"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v3.0.2"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
-  chart_version = "10.9.0"
-  image_tag     = "6.0.9"
+  chart_version = "12.6.2"
+  image_tag     = "6.0.10"
 }
 
 module "api" {
