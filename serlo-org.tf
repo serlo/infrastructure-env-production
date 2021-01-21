@@ -5,7 +5,7 @@ locals {
         httpd             = "15.4.1"
         php               = "15.4.1"
         migrate           = "15.4.1"
-        notifications_job = "3.0.3"
+        notifications_job = "3.0.4"
       }
       editor_renderer        = "11.0.4"
       legacy_editor_renderer = "3.0.3"
