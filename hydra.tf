@@ -1,6 +1,6 @@
 locals {
   hydra = {
-    chart_version = "0.5.1"
+    chart_version = "0.5.3"
     image_tag     = "v1.9.2"
   }
 }
