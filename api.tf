@@ -1,8 +1,8 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.0"
-      server         = "0.19.2"
+      database_layer = "0.3.3"
+      server         = "0.19.14"
     }
   }
 }
@@ -16,7 +16,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v4.1.2"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v5.0.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -27,15 +27,14 @@ module "api" {
     active_donors = var.api_active_donors_google_spreadsheet_id
     secret        = var.api_active_donors_google_api_key
   }
-  redis_url            = "redis://redis-master:6379"
-  sentry_dsn           = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
-  serlo_org_ip_address = module.serlo_org.server_service_ip_address
+  redis_url = "redis://redis-master:6379"
 
   database_layer = {
     image_tag = local.api.image_tags.database_layer
 
     database_url             = "mysql://serlo_readonly:${var.athene2_database_password_readonly}@${module.gcloud_mysql.database_private_ip_address}:3306/serlo"
-    database_max_connections = 50
+    database_max_connections = 25
+    sentry_dsn               = "https://849cde772c90451c807ed96a318a935a@o115070.ingest.sentry.io/5649015"
   }
 
   server = {
@@ -44,10 +43,11 @@ module "api" {
       username = var.api_swr_queue_dashboard_username
       password = var.api_swr_queue_dashboard_password
     }
+    sentry_dsn = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
   }
 
   swr_queue_worker = {
-    concurrency = 2
+    concurrency = 1
   }
 }
 
