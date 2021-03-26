@@ -2,9 +2,9 @@ locals {
   serlo_org = {
     image_tags = {
       server = {
-        httpd             = "16.1.0"
-        php               = "16.1.0"
-        migrate           = "16.1.0"
+        httpd             = "16.1.2"
+        php               = "16.1.2"
+        migrate           = "16.1.2"
         notifications_job = "3.0.4"
       }
       editor_renderer        = "12.0.0"
