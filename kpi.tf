@@ -29,7 +29,7 @@ module "kpi" {
 }
 
 module "kpi_ingress" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v3.0.3"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v3.0.4"
 
   name      = "kpi"
   namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
