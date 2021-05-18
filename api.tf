@@ -2,7 +2,7 @@ locals {
   api = {
     image_tags = {
       database_layer = "0.3.10"
-      server         = "0.24.0"
+      server         = "0.24.1"
     }
   }
 }
@@ -47,7 +47,7 @@ module "api" {
   }
 
   swr_queue_worker = {
-    concurrency = 1
+    concurrency = 2
   }
 }
 
