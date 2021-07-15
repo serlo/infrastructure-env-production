@@ -15,7 +15,7 @@ module "kpi" {
   grafana_admin_password = var.kpi_grafana_admin_password
   grafana_serlo_password = var.kpi_grafana_serlo_password
 
-  athene2_database_host              = module.gcloud_mysql.database_private_ip_address
+  athene2_database_host              = module.mysql.database_private_ip_address
   athene2_database_password_readonly = var.athene2_database_password_readonly
 
   kpi_database_host              = module.gcloud_postgres.database_private_ip_address

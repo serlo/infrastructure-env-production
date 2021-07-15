@@ -14,6 +14,7 @@ locals {
   cluster_machine_type = "n1-highcpu-4"
 
   athene2_database_instance_name = "${local.project}-mysql-2020-01-26"
+  mysql_database_instance_name   = "${local.project}-mysql-2021-07-15"
   kpi_database_instance_name     = "${local.project}-postgres-2020-01-26"
 }
 
@@ -35,10 +36,11 @@ module "cluster" {
   }
 }
 
-module "gcloud_mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v1.0.2"
-  database_instance_name     = local.athene2_database_instance_name
-  database_connection_name   = "${local.project}:${local.region}:${local.athene2_database_instance_name}"
+module "mysql" {
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v1.1.0"
+  database_instance_name     = local.mysql_database_instance_name
+  database_version           = "MYSQL_5_7"
+  database_connection_name   = "${local.project}:${local.region}:${local.mysql_database_instance_name}"
   database_region            = local.region
   database_name              = "serlo"
   database_tier              = "db-n1-standard-4"
@@ -68,7 +70,7 @@ module "athene2-dbdump" {
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
   database = {
-    host     = module.gcloud_mysql.database_private_ip_address
+    host     = module.mysql.database_private_ip_address
     port     = "3306"
     username = "serlo_readonly"
     password = var.athene2_database_password_readonly

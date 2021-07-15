@@ -38,7 +38,7 @@ module "serlo_org" {
     enable_mail_mock  = false
 
     database = {
-      host     = module.gcloud_mysql.database_private_ip_address
+      host     = module.mysql.database_private_ip_address
       username = "serlo"
       password = var.athene2_database_password_default
     }
