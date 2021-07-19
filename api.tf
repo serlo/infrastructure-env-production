@@ -1,8 +1,9 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.16"
+      database_layer = "0.3.17"
       server         = "0.26.8"
+      cache_worker   = "0.4.0"
     }
   }
 }
@@ -16,16 +17,26 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v5.0.2"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v5.1.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
   image_pull_policy = "IfNotPresent"
 
   environment = "production"
+  cache_worker = {
+    enable_cronjob = false
+    image_tag      = local.api.image_tags.cache_worker
+  }
   google_spreadsheet_api = {
     active_donors = var.api_active_donors_google_spreadsheet_id
+    motivation    = var.api_motivation_google_spreadsheet_id
     secret        = var.api_active_donors_google_api_key
+  }
+  rocket_chat_api = {
+    user_id    = var.rocket_chat_user_id
+    auth_token = var.rocket_chat_auth_token
+    url        = "https://${module.rocket-chat.host}/"
   }
   redis_url = "redis://redis-master:6379"
 
