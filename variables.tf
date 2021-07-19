@@ -62,6 +62,18 @@ variable "api_active_donors_google_spreadsheet_id" {
   type = string
 }
 
+variable "api_motivation_google_spreadsheet_id" {
+  type = string
+}
+
+variable "rocket_chat_user_id" {
+  type = string
+}
+
+variable "rocket_chat_auth_token" {
+  type = string
+}
+
 variable "api_swr_queue_dashboard_username" {
   type = string
 }
