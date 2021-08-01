@@ -5,7 +5,7 @@ locals {
       mongodb    = "10.4.0"
     }
     image_tags = {
-      rocketchat = "3.12.7"
+      rocketchat = "3.15.4"
       mongodb    = "4.2.11"
     }
   }
