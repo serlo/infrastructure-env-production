@@ -1,11 +1,11 @@
 locals {
   hydra = {
-    chart_version = "0.17.0"
+    chart_version = "0.19.0"
     image_tag     = "v1.10.3"
   }
 }
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v4.0.1"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v5.1.0"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
