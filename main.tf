@@ -22,7 +22,7 @@ locals {
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v2.0.0"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v2.1.0"
   name     = "${local.project}-cluster"
   location = local.zone
   region   = local.region
