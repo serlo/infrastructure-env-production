@@ -22,8 +22,9 @@ locals {
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v2.1.0"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v3.0.0"
   name     = "${local.project}-cluster"
+  project  = local.project
   location = local.zone
   region   = local.region
 
@@ -37,7 +38,7 @@ module "cluster" {
 }
 
 module "mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v2.0.0"
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v3.0.0"
   database_instance_name     = local.mysql_database_instance_name
   database_version           = "MYSQL_5_7"
   database_connection_name   = "${local.project}:${local.region}:${local.mysql_database_instance_name}"
@@ -50,7 +51,7 @@ module "mysql" {
 }
 
 module "gcloud_postgres" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=v2.0.0"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=v3.0.0"
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
@@ -65,7 +66,7 @@ module "gcloud_postgres" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=v2.0.1"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=v3.0.0"
   image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   schedule  = "0 0 * * *"
@@ -84,11 +85,11 @@ module "athene2-dbdump" {
 }
 
 module "gcloud_dbdump_writer" {
-  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=v2.0.0"
+  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=v3.0.0"
 }
 
 module "ingress-nginx" {
-  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=v4.0.0"
+  source      = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=v6.0.0"
   namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
   ip          = module.cluster.address
   domain      = "*.${local.domain}"
