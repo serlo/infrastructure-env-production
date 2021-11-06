@@ -17,7 +17,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v6.0.1"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v6.0.2"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -37,6 +37,9 @@ module "api" {
     user_id    = var.rocket_chat_user_id
     auth_token = var.rocket_chat_auth_token
     url        = "https://${module.rocket-chat.host}/"
+  }
+  mailchimp_api = {
+    key = var.athene2_php_newsletter_key
   }
   redis_url = "redis://redis-master:6379"
 
