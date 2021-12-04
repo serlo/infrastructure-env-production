@@ -2,7 +2,7 @@ locals {
   api = {
     image_tags = {
       database_layer = "0.3.27"
-      server         = "0.26.28"
+      server         = "0.27.0"
       cache_worker   = "0.4.0"
     }
   }
@@ -17,7 +17,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v6.0.2"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v7.0.1"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -58,6 +58,12 @@ module "api" {
       password = var.api_swr_queue_dashboard_password
     }
     sentry_dsn = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
+
+    enmeshed = {
+      host           = ""
+      server_secret  = ""
+      webhook_secret = ""
+    }
   }
 
   swr_queue_worker = {
