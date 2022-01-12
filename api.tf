@@ -1,29 +1,32 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.27"
-      server         = "0.27.0"
-      cache_worker   = "0.4.0"
+      database_layer = "0.3.30"
+      server         = "0.28.1"
+      cache_worker   = "0.4.2"
     }
   }
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v6.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v11.0.0"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
   chart_version = "12.6.2"
   image_tag     = "6.0.10"
+  node_pool     = module.cluster.node_pools.non-preemptible
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v7.0.1"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v8.0.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
   image_pull_policy = "IfNotPresent"
+  node_pool         = module.cluster.node_pools.non-preemptible
 
   environment = "production"
+
   cache_worker = {
     enable_cronjob = false
     image_tag      = local.api.image_tags.cache_worker
@@ -72,7 +75,7 @@ module "api" {
 }
 
 module "api_server_ingress" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v6.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v11.0.0"
 
   name      = "api"
   namespace = kubernetes_namespace.api_namespace.metadata.0.name
@@ -81,7 +84,8 @@ module "api_server_ingress" {
     service_name = module.api.server_service_name
     service_port = module.api.server_service_port
   }
-  enable_tls = true
+  enable_tls  = true
+  enable_cors = true
 }
 
 resource "kubernetes_namespace" "api_namespace" {

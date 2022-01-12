@@ -12,13 +12,15 @@ locals {
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=v8.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=v11.0.0"
 
   host           = "community.${local.domain}"
   namespace      = kubernetes_namespace.community_namespace.metadata.0.name
   chart_versions = local.rocket_chat.chart_versions
   image_tags     = local.rocket_chat.image_tags
-  app_replicas   = 1
+  node_pool      = module.cluster.node_pools.non-preemptible
+
+  app_replicas = 1
 
   mongodump = {
     image         = "eu.gcr.io/serlo-shared/mongodb-tools-base:1.0.1"
