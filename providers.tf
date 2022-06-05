@@ -25,8 +25,7 @@ provider "helm" {
 }
 
 provider "kubernetes" {
-  host             = module.cluster.endpoint
-  load_config_file = false
+  host = "https://${module.cluster.endpoint}"
 
   client_certificate     = base64decode(module.cluster.auth.client_certificate)
   client_key             = base64decode(module.cluster.auth.client_key)

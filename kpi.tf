@@ -8,7 +8,7 @@ locals {
 }
 
 module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v5.0.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v6.0.0"
 
   node_pool = module.cluster.node_pools.non-preemptible
 
@@ -31,7 +31,7 @@ module "kpi" {
 }
 
 module "kpi_ingress" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v11.0.2"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v12.0.0"
 
   name      = "kpi"
   namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
