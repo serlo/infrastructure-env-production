@@ -13,3 +13,7 @@ secrets/
 
 #ignore tmp folder
 **/tmp
+
+# ides
+.idea
+infrastructure-env-production.iml
