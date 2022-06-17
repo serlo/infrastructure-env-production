@@ -1,7 +1,7 @@
 locals {
   rocket_chat = {
     chart_versions = {
-      rocketchat = "3.1.0"
+      rocketchat = "4.7.4"
       mongodb    = "10.23.13"
     }
     image_tags = {
@@ -12,7 +12,7 @@ locals {
 }
 
 module "rocket-chat" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=v12.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//rocket-chat?ref=v14.0.0"
 
   host           = "community.${local.domain}"
   namespace      = kubernetes_namespace.community_namespace.metadata.0.name
@@ -29,6 +29,19 @@ module "rocket-chat" {
   }
 
   smtp_password = var.athene2_php_smtp_password
+}
+
+module "rocket-chat_ingress" {
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v13.1.0"
+
+  name      = "rocket-chat"
+  namespace = kubernetes_namespace.community_namespace.metadata.0.name
+  host      = "community.${local.domain}"
+  backend = {
+    service_name = "rocket-chat-rocketchat"
+    service_port = 80
+  }
+  enable_tls = true
 }
 
 resource "kubernetes_namespace" "community_namespace" {

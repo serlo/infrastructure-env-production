@@ -6,7 +6,7 @@ locals {
 }
 
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v12.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v13.2.0"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   chart_version = local.hydra.chart_version

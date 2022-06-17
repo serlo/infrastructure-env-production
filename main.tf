@@ -91,27 +91,15 @@ module "gcloud_dbdump_writer" {
 }
 
 module "ingress-nginx" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=v12.0.1"
+  source = "github.com/serlo/infrastructure-modules-shared.git//ingress-nginx?ref=v13.2.0"
 
-  namespace   = kubernetes_namespace.ingress_nginx_namespace.metadata.0.name
-  node_pool   = module.cluster.node_pools.non-preemptible
-  ip          = module.cluster.address
-  domain      = "*.${local.domain}"
-  nginx_image = "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1"
+  node_pool = module.cluster.node_pools.non-preemptible
+  ip        = module.cluster.address
 }
 
 module "cloudflare" {
-  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=v5.0.0"
+  source  = "github.com/serlo/infrastructure-modules-env-shared.git//cloudflare?ref=v5.1.0"
   domain  = local.domain
   ip      = module.cluster.address
   zone_id = "1a4afa776acb2e40c3c8a135248328ae"
-}
-
-#####################################################################
-# namespaces
-#####################################################################
-resource "kubernetes_namespace" "ingress_nginx_namespace" {
-  metadata {
-    name = "ingress-nginx"
-  }
 }
