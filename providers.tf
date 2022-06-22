@@ -7,11 +7,6 @@ provider "google" {
   credentials = file(local.credentials_path)
 }
 
-provider "google-beta" {
-  project     = local.project
-  credentials = file(local.credentials_path)
-}
-
 provider "helm" {
   kubernetes {
     host     = module.cluster.endpoint
