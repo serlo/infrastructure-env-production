@@ -6,6 +6,7 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
   constraints = ">= 3.0.0, ~> 3.0"
   hashes = [
     "h1:KU4VHMYSbPlimCl2VbKmbFf7ctXHt1DmFrcd8P5/c4c=",
+    "h1:QF87L0J98NgpNMhOfOtFykadyzJ0FfkV2RPF6sf/FrA=",
     "zh:12c7d968b14e54990a1c137f1b0b525eacefbcc857baf00c107c7a32ebb3f476",
     "zh:2202f5debee417cc367e12183803ecb373c4a7571b79dbb39e826ce88276184c",
     "zh:283b16ee3cb1bac96d9a1db588e0bb0272e7a89d5ac101243f8758c81f70ec7c",
@@ -28,6 +29,7 @@ provider "registry.terraform.io/hashicorp/google" {
   constraints = ">= 4.0.0, ~> 4.0"
   hashes = [
     "h1:FfZxRpxth+8esL2X64LNkZOfrSlv3tMYNKktE6MFG90=",
+    "h1:mTjJ6FV3RzGqCvHudz8aRsgyUjbQYlzCCT2gJBPNjzE=",
     "zh:02668581b4f806418cf9a67041e01bb751cac6fa62151a11fed464e3cd253248",
     "zh:039a5217afa1b0ff4ae4dfeb7440065780d8dbab34f778c9299810b1f4c1a318",
     "zh:188620275a65e578fa9d77f4a3f1802a376f4c096856532816198e5ef7493b87",
@@ -68,6 +70,7 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.13.0"
   constraints = ">= 2.0.0, ~> 2.0"
   hashes = [
+    "h1:prBkxY+/cp7nqflmkOF1b/B1jYbItCEHebr5tjLAuGk=",
     "h1:vE0TXrBXKiPbMLC4VqihXCZxWtKyxdmGqlen747/Hhk=",
     "zh:0432af00bc631be4019ba7611afae2816c00d4b2ee40469743f64be203f783cb",
     "zh:21dabdfaa0f48012ae05a4114f93d0208faa55f98fd260caf8254abc6c1c0682",
