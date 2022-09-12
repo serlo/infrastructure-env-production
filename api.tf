@@ -18,7 +18,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v9.0.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v9.2.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -55,12 +55,14 @@ module "api" {
   }
 
   server = {
-    hydra_host = module.hydra.admin_uri
+    hydra_host  = module.hydra.admin_uri
+    kratos_host = ""
     swr_queue_dashboard = {
       username = var.api_swr_queue_dashboard_username
       password = var.api_swr_queue_dashboard_password
     }
-    sentry_dsn = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
+    google_service_account = file("secrets/serlo-org-6bab84a1b1a5.json")
+    sentry_dsn             = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
 
     enmeshed = {
       host           = ""
