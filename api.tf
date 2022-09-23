@@ -63,12 +63,6 @@ module "api" {
     }
     google_service_account = file("secrets/serlo-org-6bab84a1b1a5.json")
     sentry_dsn             = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
-
-    enmeshed = {
-      host           = ""
-      server_secret  = ""
-      webhook_secret = ""
-    }
   }
 
   swr_queue_worker = {
