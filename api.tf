@@ -1,8 +1,8 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.55"
-      server         = "0.47.0"
+      database_layer = "0.3.57"
+      server         = "0.48.0-stable.1"
       cache_worker   = "0.4.2"
     }
   }
@@ -56,10 +56,9 @@ module "api" {
 
   server = {
     hydra_host         = module.hydra.admin_uri
-    kratos_host        = ""
-    kratos_admin_host  = ""
-    kratos_public_host = ""
-    kratos_secret      = ""
+    kratos_public_host = module.kratos.public_uri
+    kratos_admin_host  = module.kratos.admin_uri
+    kratos_secret      = module.kratos.secret
     swr_queue_dashboard = {
       username = var.api_swr_queue_dashboard_username
       password = var.api_swr_queue_dashboard_password
