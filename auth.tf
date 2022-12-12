@@ -1,7 +1,8 @@
 locals {
+  ory_chart_version = "0.23.3"
+
   hydra = {
-    chart_version = "0.23.3"
-    image_tag     = "v1.11.8"
+    image_tag = "v1.11.8"
   }
 
   kratos = {
@@ -14,7 +15,7 @@ module "hydra" {
   source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v13.2.0"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
-  chart_version = local.hydra.chart_version
+  chart_version = local.ory_chart_version
   image_tag     = local.hydra.image_tag
   node_pool     = module.cluster.node_pools.non-preemptible
 
