@@ -21,9 +21,9 @@ module "hydra" {
 
   # TODO: add extra user for hydra
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
-  url_login   = "https://de.${local.domain}/auth/hydra/login"
-  url_logout  = "https://de.${local.domain}/auth/hydra/logout"
-  url_consent = "https://de.${local.domain}/auth/hydra/consent"
+  url_login   = "https://${local.domain}/auth/oauth/login"
+  url_logout  = "https://${local.domain}/auth/oauth/logout"
+  url_consent = "https://${local.domain}/auth/oauth/consent"
   host        = "hydra.${local.domain}"
 }
 
@@ -40,6 +40,7 @@ module "kratos" {
   image_tag     = local.kratos.image_tag
   domain        = local.domain
 }
+
 
 resource "kubernetes_namespace" "hydra_namespace" {
   metadata {
