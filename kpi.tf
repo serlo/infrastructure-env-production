@@ -10,7 +10,7 @@ locals {
 }
 
 module "mfnf2serlo" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//mfnf2serlo?ref=v6.1.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//mfnf2serlo?ref=v6.1.1"
 
   namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
 
