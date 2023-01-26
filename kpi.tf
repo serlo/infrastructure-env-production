@@ -6,7 +6,7 @@ locals {
     mfnf_importer_image_tag  = "1.0.1"
   }
 
-  mfnf2serlo_image_tag = "0.0.0"
+  mfnf2serlo_image_tag = "0.0.1"
 }
 
 module "mfnf2serlo" {
