@@ -1,8 +1,8 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.58"
-      server         = "0.48.0"
+      database_layer = "0.3.60"
+      server         = "0.49.2"
       cache_worker   = "0.4.2"
     }
   }
@@ -18,7 +18,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v10.1.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v10.2.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -61,6 +61,7 @@ module "api" {
     kratos_secret      = module.kratos.secret
     kratos_db_uri      = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
 
+    notification_email_secret = module.notifications.secret
     swr_queue_dashboard = {
       username = var.api_swr_queue_dashboard_username
       password = var.api_swr_queue_dashboard_password
