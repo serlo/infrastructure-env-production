@@ -1,6 +1,6 @@
 locals {
   notification_mail = {
-    image_tag = "0.1.2"
+    image_tag = "0.1.3"
   }
 }
 
