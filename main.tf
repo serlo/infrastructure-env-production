@@ -21,7 +21,7 @@ locals {
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v5.0.1"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v5.1.1"
   name     = "${local.project}-cluster"
   project  = local.project
   location = local.zone
@@ -39,7 +39,7 @@ module "cluster" {
 }
 
 module "mysql" {
-  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v5.0.1"
+  source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v5.1.1"
   database_instance_name     = local.mysql_database_instance_name
   database_version           = "MYSQL_5_7"
   database_connection_name   = "${local.project}:${local.region}:${local.mysql_database_instance_name}"
@@ -52,7 +52,7 @@ module "mysql" {
 }
 
 module "gcloud_postgres" {
-  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=v5.0.1"
+  source                   = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_postgres?ref=v5.1.1"
   database_instance_name   = local.kpi_database_instance_name
   database_connection_name = "${local.project}:${local.region}:${local.kpi_database_instance_name}"
   database_region          = local.region
@@ -87,7 +87,7 @@ module "athene2-dbdump" {
 }
 
 module "gcloud_dbdump_writer" {
-  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=v5.0.1"
+  source = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_dbdump_writer?ref=v5.1.1"
 }
 
 module "ingress-nginx" {
