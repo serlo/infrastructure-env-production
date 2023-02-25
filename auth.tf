@@ -41,6 +41,22 @@ module "kratos" {
   domain        = local.domain
 }
 
+module "kratos_import_interest_job" {
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos-import-scripts/import-interest?ref=v15.5.0"
+
+  namespace = kubernetes_namespace.kratos_namespace.metadata.0.name
+  node_pool = module.cluster.node_pools.non-preemptible
+  mysql_database = {
+    host     = module.mysql.database_private_ip_address
+    password = var.athene2_database_password_default
+    username = "serlo"
+  }
+  postgres_database = {
+    host     = module.gcloud_postgres.database_private_ip_address
+    password = var.kpi_kpi_database_password_default
+  }
+}
+
 
 resource "kubernetes_namespace" "hydra_namespace" {
   metadata {
