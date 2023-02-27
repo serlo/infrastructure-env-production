@@ -67,19 +67,20 @@ module "gcloud_postgres" {
 }
 
 module "athene2-dbdump" {
-  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=v5.0.0"
-  image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:2.0.0"
+  source    = "github.com/serlo/infrastructure-modules-serlo.org.git//dbdump?ref=v7.0.0"
+  image     = "eu.gcr.io/serlo-shared/athene2-dbdump-cronjob:3.1.0"
   namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
   node_pool = module.cluster.node_pools.non-preemptible
   schedule  = "0 0 * * *"
-  database = {
+  mysql = {
     host     = module.mysql.database_private_ip_address
-    port     = "3306"
     username = "serlo_readonly"
     password = var.athene2_database_password_readonly
-    name     = "serlo"
   }
-
+  postgres = {
+    host     = module.gcloud_postgres.database_private_ip_address
+    password = var.kpi_kpi_database_password_readonly
+  }
   bucket = {
     url                 = "gs://anonymous-data"
     service_account_key = module.gcloud_dbdump_writer.account_key
