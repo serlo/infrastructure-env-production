@@ -6,20 +6,19 @@ locals {
   }
 
   kratos = {
-    image_tag = "next"
+    image_tag = "0.11.1-custom"
   }
 
 }
 
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v15.4.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v15.6.1"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   chart_version = local.ory_chart_version
   image_tag     = local.hydra.image_tag
   node_pool     = module.cluster.node_pools.non-preemptible
 
-  # TODO: add extra user for hydra
   dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://${local.domain}/auth/oauth/login"
   url_logout  = "https://${local.domain}/auth/oauth/logout"
@@ -28,13 +27,11 @@ module "hydra" {
 }
 
 module "kratos" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v15.4.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v15.6.1"
 
-  namespace = kubernetes_namespace.kratos_namespace.metadata.0.name
-  # TODO: add extra user for kratos
-  dsn  = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
-  host = "kratos.${local.domain}"
-  # TODO: rename
+  namespace     = kubernetes_namespace.kratos_namespace.metadata.0.name
+  dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
+  host          = "kratos.${local.domain}"
   smtp_password = var.athene2_php_smtp_password
   chart_version = local.ory_chart_version
   image_tag     = local.kratos.image_tag
