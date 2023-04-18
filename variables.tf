@@ -81,3 +81,7 @@ variable "api_swr_queue_dashboard_username" {
 variable "api_swr_queue_dashboard_password" {
   type = string
 }
+
+variable "kratos_nbp_client_secret" {
+  type = string
+}
