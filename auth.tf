@@ -39,6 +39,16 @@ module "kratos" {
   nbp_client_secret = var.kratos_nbp_client_secret
 }
 
+module "kratos_sync_accounts" {
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos-import-scripts/sync-accounts?ref=v16.1.0"
+
+  node_pool = module.cluster.node_pools.preemptible
+  namespace = kubernetes_namespace.kratos_namespace.metadata.0.name
+  postgres_database = {
+    host     = module.gcloud_postgres.database_private_ip_address
+    password = var.kpi_kpi_database_password_readonly
+  }
+}
 
 resource "kubernetes_namespace" "hydra_namespace" {
   metadata {
