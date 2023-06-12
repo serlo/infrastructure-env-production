@@ -2,7 +2,7 @@ locals {
   ory_chart_version = "0.23.3"
 
   hydra = {
-    image_tag = "v1.11.8"
+    image_tag = "v2.1.2"
   }
 
   kratos = {
