@@ -1,9 +1,10 @@
 locals {
   api = {
     image_tags = {
-      database_layer = "0.3.63"
-      server         = "0.50.1"
-      cache_worker   = "0.4.2"
+      database_layer   = "0.3.63"
+      server           = "0.50.1"
+      cache_worker     = "0.4.2"
+      api_db_migration = "0.1.0"
     }
   }
 }
@@ -18,7 +19,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v10.2.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v10.3.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -52,6 +53,12 @@ module "api" {
     database_url             = "mysql://serlo:${var.athene2_database_password_default}@${module.mysql.database_private_ip_address}:3306/serlo"
     database_max_connections = 25
     sentry_dsn               = "https://849cde772c90451c807ed96a318a935a@o115070.ingest.sentry.io/5649015"
+  }
+
+  api_db_migration = {
+    image_tag = local.api.image_tags.api_db_migration
+
+    database_url = "mysql://serlo:${var.athene2_database_password_default}@${module.mysql.database_private_ip_address}:3306/serlo"
   }
 
   server = {
