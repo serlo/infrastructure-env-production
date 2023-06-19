@@ -41,7 +41,7 @@ module "cluster" {
 module "mysql" {
   source                     = "github.com/serlo/infrastructure-modules-gcloud.git//gcloud_mysql?ref=v5.1.1"
   database_instance_name     = local.mysql_database_instance_name
-  database_version           = "MYSQL_5_7"
+  database_version           = "MYSQL_8_0_26"
   database_connection_name   = "${local.project}:${local.region}:${local.mysql_database_instance_name}"
   database_region            = local.region
   database_name              = "serlo"
