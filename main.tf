@@ -21,7 +21,7 @@ locals {
 # modules
 #####################################################################
 module "cluster" {
-  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v5.1.1"
+  source   = "github.com/serlo/infrastructure-modules-gcloud.git//cluster?ref=v5.3.0"
   name     = "${local.project}-cluster"
   project  = local.project
   location = local.zone
@@ -34,6 +34,7 @@ module "cluster" {
       initial_node_count = 2
       min_node_count     = 2
       max_node_count     = 10
+      location_policy    = "BALANCED"
     }
   }
 }
