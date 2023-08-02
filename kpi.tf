@@ -35,7 +35,7 @@ module "mfnf2serlo_ingress" {
 }
 
 module "kpi" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v6.1.0"
+  source = "github.com/serlo/infrastructure-modules-kpi.git//kpi?ref=v6.2.3"
 
   node_pool = module.cluster.node_pools.non-preemptible
 
