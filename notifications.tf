@@ -5,7 +5,7 @@ locals {
 }
 
 module "notifications" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//notification-mail?ref=v15.4.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//notification-mail?ref=v17.1.1"
 
   namespace = kubernetes_namespace.notifications.metadata.0.name
   image_tag = local.notification_mail.image_tag
