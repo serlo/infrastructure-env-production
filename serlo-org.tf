@@ -79,7 +79,7 @@ module "serlo_org" {
   }
 }
 
-resource "kubernetes_ingress" "athene2_ingress" {
+resource "kubernetes_ingress_v1" "athene2_ingress" {
   metadata {
     name      = "athene2-ingress"
     namespace = kubernetes_namespace.serlo_org_namespace.metadata.0.name
@@ -91,9 +91,24 @@ resource "kubernetes_ingress" "athene2_ingress" {
   }
 
   spec {
-    backend {
-      service_name = module.serlo_org.service_name
-      service_port = module.serlo_org.service_port
+    ingress_class_name = "nginx"
+
+    rule {
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+
+          backend {
+            service {
+              name = module.serlo_org.service_name
+              port {
+                number = module.serlo_org.service_port
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
