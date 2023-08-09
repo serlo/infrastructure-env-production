@@ -10,7 +10,7 @@ locals {
 }
 
 module "api_redis" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v13.2.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//redis?ref=v17.1.2"
 
   namespace     = kubernetes_namespace.api_namespace.metadata.0.name
   chart_version = "12.6.2"
