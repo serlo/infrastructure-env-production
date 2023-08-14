@@ -57,6 +57,7 @@ module "api" {
   }
 
   api_db_migration = {
+    enable_cronjob = false
     image_tag = local.api.image_tags.api_db_migration
 
     database_url = "mysql://serlo:${var.athene2_database_password_default}@${module.mysql.database_private_ip_address}:3306/serlo"
