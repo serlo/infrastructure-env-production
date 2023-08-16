@@ -18,7 +18,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v11.0.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v12.0.0"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -52,7 +52,8 @@ module "api" {
   }
 
   api_db_migration = {
-    image_tag = local.api.image_tags.api_db_migration
+    enable_cronjob = false
+    image_tag      = local.api.image_tags.api_db_migration
 
     database_url = "mysql://serlo:${var.athene2_database_password_default}@${module.mysql.database_private_ip_address}:3306/serlo"
   }
