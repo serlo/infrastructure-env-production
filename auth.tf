@@ -12,7 +12,7 @@ locals {
 }
 
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v17.3.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v17.4.1"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   chart_version = local.ory_chart_version
