@@ -14,7 +14,7 @@ locals {
 module "hydra" {
   source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v17.4.1"
 
-  namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
+  namespace     = kubernetes_namespace.auth_namespace.metadata.0.name
   chart_version = local.ory_chart_version
   image_tag     = local.hydra.image_tag
   node_pool     = module.cluster.node_pools.non-preemptible
@@ -27,9 +27,9 @@ module "hydra" {
 }
 
 module "kratos" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.3.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.4.1"
 
-  namespace     = kubernetes_namespace.kratos_namespace.metadata.0.name
+  namespace     = kubernetes_namespace.auth_namespace.metadata.0.name
   dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
   host          = "kratos.${local.domain}"
   smtp_password = var.athene2_php_smtp_password
@@ -40,14 +40,8 @@ module "kratos" {
 }
 
 
-resource "kubernetes_namespace" "hydra_namespace" {
+resource "kubernetes_namespace" "auth_namespace" {
   metadata {
-    name = "hydra"
-  }
-}
-
-resource "kubernetes_namespace" "kratos_namespace" {
-  metadata {
-    name = "kratos"
+    name = "auth"
   }
 }
