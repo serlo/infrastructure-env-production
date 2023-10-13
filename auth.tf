@@ -12,7 +12,7 @@ locals {
 }
 
 module "hydra" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v17.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//hydra?ref=v17.3.0"
 
   namespace     = kubernetes_namespace.hydra_namespace.metadata.0.name
   chart_version = local.ory_chart_version
@@ -27,7 +27,7 @@ module "hydra" {
 }
 
 module "kratos" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.3.0"
 
   namespace     = kubernetes_namespace.kratos_namespace.metadata.0.name
   dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"

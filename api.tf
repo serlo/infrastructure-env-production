@@ -1,9 +1,10 @@
 locals {
   api = {
     image_tags = {
-      database_layer   = "0.3.70"
-      server           = "0.56.0"
-      api_db_migration = "0.4.0"
+      database_layer             = "0.3.70"
+      server                     = "0.57.5"
+      api_db_migration           = "0.4.0"
+      content_generation_service = "0.2.2"
     }
   }
 }
@@ -18,7 +19,7 @@ module "api_redis" {
 }
 
 module "api" {
-  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v12.1.0"
+  source = "github.com/serlo/infrastructure-modules-api.git//?ref=v12.3.1"
 
   namespace         = kubernetes_namespace.api_namespace.metadata.0.name
   image_tag         = local.api.image_tags.server
@@ -70,12 +71,20 @@ module "api" {
       username = var.api_swr_queue_dashboard_username
       password = var.api_swr_queue_dashboard_password
     }
-    google_service_account = file("secrets/serlo-org-6bab84a1b1a5.json")
-    sentry_dsn             = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
+    google_service_account  = file("secrets/serlo-org-6bab84a1b1a5.json")
+    sentry_dsn              = "https://dd6355782e894e048723194b237baa39@o115070.ingest.sentry.io/5385534"
+    enmeshed_server_host    = ""
+    enmeshed_server_secret  = ""
+    enmeshed_webhook_secret = ""
   }
 
   swr_queue_worker = {
     concurrency = 2
+  }
+
+  content_generation_service = {
+    image_tag      = local.api.image_tags.content_generation_service
+    openai_api_key = var.openai_api_key
   }
 }
 

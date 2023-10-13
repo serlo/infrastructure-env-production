@@ -88,3 +88,7 @@ variable "kratos_nbp_client" {
     secret = string
   })
 }
+
+variable "openai_api_key" {
+  type = string
+}
