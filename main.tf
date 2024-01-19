@@ -61,9 +61,9 @@ module "gcloud_postgres" {
   database_private_network = module.cluster.network
 
   database_password_postgres = var.kpi_kpi_database_password_postgres
-  database_username_default  = module.kpi.kpi_database_username_default
+  database_username_default  = var.postgres_username_default
   database_password_default  = var.kpi_kpi_database_password_default
-  database_username_readonly = module.kpi.kpi_database_username_readonly
+  database_username_readonly = var.postgres_username_readonly
   database_password_readonly = var.kpi_kpi_database_password_readonly
 }
 

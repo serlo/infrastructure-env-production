@@ -19,7 +19,7 @@ module "hydra" {
   image_tag     = local.hydra.image_tag
   node_pool     = module.cluster.node_pools.non-preemptible
 
-  dsn         = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
+  dsn         = "postgres://${var.postgres_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/hydra"
   url_login   = "https://${local.domain}/auth/oauth/login"
   url_logout  = "https://${local.domain}/auth/oauth/logout"
   url_consent = "https://${local.domain}/auth/oauth/consent"
@@ -30,7 +30,7 @@ module "kratos" {
   source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.4.1"
 
   namespace     = kubernetes_namespace.auth_namespace.metadata.0.name
-  dsn           = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
+  dsn           = "postgres://${var.postgres_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
   host          = "kratos.${local.domain}"
   smtp_password = var.athene2_php_smtp_password
   chart_version = local.ory_chart_version

@@ -9,10 +9,6 @@ variable "athene2_database_password_readonly" {
   description = "Password for 'readonly user' in athene2 database."
 }
 
-variable "kpi_grafana_admin_password" {
-  description = "Admin password for grafana."
-}
-
 variable "kpi_kpi_database_password_postgres" {
   description = "Password for postgres postgres user."
 }
@@ -50,8 +46,12 @@ variable "athene2_php_newsletter_key" {
   description = "Key for newsletter"
 }
 
-variable "kpi_grafana_serlo_password" {
-  description = "Password for grafana serlo user"
+variable "postgres_username_default" {
+  default = "serlo"
+}
+
+variable "postgres_username_readonly" {
+  default = "serlo_readonly"
 }
 
 variable "api_active_donors_google_api_key" {

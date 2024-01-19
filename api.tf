@@ -63,7 +63,7 @@ module "api" {
     kratos_public_host = module.kratos.public_uri
     kratos_admin_host  = module.kratos.admin_uri
     kratos_secret      = module.kratos.secret
-    kratos_db_uri      = "postgres://${module.kpi.kpi_database_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
+    kratos_db_uri      = "postgres://${var.postgres_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
 
     notification_email_secret = module.notifications.secret
     swr_queue_dashboard = {
