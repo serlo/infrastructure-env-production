@@ -1,16 +1,9 @@
 locals {
-  kpi = {
-    grafana_image_tag        = "1.6.2"
-    mysql_importer_image_tag = "1.4.1"
-    aggregator_image_tag     = "1.7.1"
-    mfnf_importer_image_tag  = "1.0.1"
-  }
-
   mfnf2serlo_image_tag = "0.5"
 }
 
 module "mfnf2serlo" {
-  source = "github.com/serlo/infrastructure-modules-kpi.git//mfnf2serlo?ref=v6.1.1"
+  source = "github.com/serlo/infrastructure-modules-shared.git//mfnf2serlo?ref=v17.8.0"
 
   namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
 
