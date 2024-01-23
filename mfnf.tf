@@ -5,7 +5,7 @@ locals {
 module "mfnf2serlo" {
   source = "github.com/serlo/infrastructure-modules-shared.git//mfnf2serlo?ref=v17.8.0"
 
-  namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
+  namespace = kubernetes_namespace.mfnf_namespace.metadata.0.name
 
   node_pool = module.cluster.node_pools.non-preemptible
 
@@ -16,7 +16,7 @@ module "mfnf2serlo_ingress" {
   source = "github.com/serlo/infrastructure-modules-shared.git//ingress?ref=v13.2.0"
 
   name      = "mfnf"
-  namespace = kubernetes_namespace.kpi_namespace.metadata.0.name
+  namespace = kubernetes_namespace.mfnf_namespace.metadata.0.name
 
   host = "mfnf.${local.domain}"
   backend = {
@@ -27,8 +27,8 @@ module "mfnf2serlo_ingress" {
   enable_cors = true
 }
 
-resource "kubernetes_namespace" "kpi_namespace" {
+resource "kubernetes_namespace" "mfnf_namespace" {
   metadata {
-    name = "kpi"
+    name = "mfnf"
   }
 }
