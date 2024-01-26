@@ -27,16 +27,17 @@ module "hydra" {
 }
 
 module "kratos" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.4.1"
+  source = "github.com/serlo/infrastructure-modules-shared.git//kratos?ref=v17.7.0"
 
-  namespace     = kubernetes_namespace.auth_namespace.metadata.0.name
-  dsn           = "postgres://${var.postgres_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
-  host          = "kratos.${local.domain}"
-  smtp_password = var.athene2_php_smtp_password
-  chart_version = local.ory_chart_version
-  image_tag     = local.kratos.image_tag
-  domain        = local.domain
-  nbp_client    = var.kratos_nbp_client
+  namespace          = kubernetes_namespace.auth_namespace.metadata.0.name
+  dsn                = "postgres://${var.postgres_username_default}:${var.kpi_kpi_database_password_default}@${module.gcloud_postgres.database_private_ip_address}/kratos"
+  host               = "kratos.${local.domain}"
+  smtp_password      = var.athene2_php_smtp_password
+  chart_version      = local.ory_chart_version
+  image_tag          = local.kratos.image_tag
+  domain             = local.domain
+  nbp_client         = var.kratos_nbp_client
+  newsletter_api_key = var.athene2_php_newsletter_key
 }
 
 
