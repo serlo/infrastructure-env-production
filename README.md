@@ -1,3 +1,5 @@
+# *DEPRECATION NOTE*: this repo is archived in favor of [github.com/serlo/infra](https://github.com/serlo/infra)
+  
 # Production-Infrastructure for Serlo
 
 ## Introduction
